@@ -1,6 +1,6 @@
 import os
 from tqdm import tqdm
-from midi_text import midi_to_text
+from midi_textefinal import texte
 import pandas as pd
 
 prompts =  []
@@ -10,7 +10,7 @@ directory = "../midis"
 
 for file in tqdm(os.listdir(directory)):
   if file.endswith(".midi") or file.endswith(".mid"):
-    s = midi_to_text(directory+'/'+file)
+    s = texte(directory+'/'+file)
     n = len(s)
     if(n>0):
       i = n//10

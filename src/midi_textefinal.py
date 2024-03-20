@@ -2,56 +2,43 @@ import py_midicsv as pm
 # Load the MIDI file and parse it into CSV format
 def texte(lieu):
     csv_string = pm.midi_to_csv(r"{}".format(lieu))
+    lmidi = []
+    lfinal = [["0","0","0","0","0"]]
 
-    l = []
+    for i in csv_string:
+        intermediaire = i.split(', ')
 
-    for i in csv_string[:100]:
-        int = i.split(', ')
-
-        if int[0] == '2'and 'Note' in int[2]:
-            l.append([int[1],int[4],int[5][:-1]]) # on ajoute time pitch velocité
+        if intermediaire[0] == '2'and 'Note' in intermediaire[2]:
+            lmidi.append([intermediaire[1],intermediaire[4],intermediaire[5][:-1]]) # on ajoute time pitch velocité
 
     # rectification on ajoute des notes off là ou il n'y en a pas
             
+    unfinished_notes = {}
+    for i in range(len(lmidi)) :
+        if lmidi[i][2] != "0":
+            lfinal.append([lmidi[i][0],lmidi[i][1], lmidi[i][2], "", ""])
+            lfinal[-2][4] = (str(int(lfinal[-1][0]) - int(lfinal[-2][0])))
+            if ((lmidi[i][1] in unfinished_notes)) :
+                unfinished_notes[lmidi[i][1]].append(len(lfinal) - 1)
+            else :
+                unfinished_notes[lmidi[i][1]] = [len(lfinal) - 1]
+        
+        if lmidi[i][2] == "0" :
+            if ((lmidi[i][1] in unfinished_notes) and (unfinished_notes[lmidi[i][1]] != [])):
+                idx = unfinished_notes[lmidi[i][1]][-1]
+                lfinal[idx][3] = str(int(lmidi[i][0]) - int(lfinal[idx][0]))
+                unfinished_notes[lmidi[i][1]].pop()
 
-    i=0
-    while i<len(l):
-        if l[i][2]!='0':
-            note = l[i][1]
-
-            compteur = 0
-            for j in range(i+1,len(l)):
-                if l[j][1] == note:
-                    if l[j][2]== '0' and compteur == 0:
-                        a =l[j][0]
-                        b= l[i][0]
-                        l[i].append (str(float(a)-float(b)))
-                        break
-                    elif l[j][2]== '0' and compteur != 0:
-                        compteur -=1
-                    else:
-                        compteur +=1
-        i+=1
-    i=0
-    while i <len(l):
-        if len(l[i]) ==3:
-            l.remove(l[i])
-            i-=1
-        i+=1
-    for i in l:
-        i[3] = i[3][:-2]
-
-    for i in range(len(l) -1) :
-        l[i].append(str(float(l[i+1][0])- float(l[i][0]))[:-2])
-
-    for i in range(len(l)):
-        l[i].remove(l[i][0])   
-    l[-1].append('0')
+    lfinal.pop(0)
+    for i in range(len(lfinal)):
+        lfinal[i].pop(0)   
+    lfinal[-1][3] = "0"
     s = ''
-    for i in l:
+    for i in lfinal:
         s+= 'p'+i[0]+':v'+i[1]+':d'+i[2]+':t'+i[3]+' '
     return s
 
-
-lieu = r"C:\Users\cypri\Desktop\python PSC\Chopin, Frédéric, Études, Op.10, g0hoN6_HDVU.mid"
-print(texte(lieu))
+lieu = "../midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o.mid"
+with open("../generated files/example.txt", "w") as file:
+    file.write(texte("../midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o.mid"))
+file.close()

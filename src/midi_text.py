@@ -50,6 +50,10 @@ def midi_to_text(midi_path):
     for i in range(len(l)):  
         s+="p" + str(l[i][2])+":" + "v" + str(l[i][3]) +":" + "d" + str(l[i][4]) + ":t" + str(l[i][5])+" "
     return s
+
+with open("../generated files/example.txt", "w") as file:
+    file.write(midi_to_text("../midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o.mid"))
+file.close()
     #with open(r"C:\Users\cypri\Desktop\python PSC\example_converted.csv", "w") as f:
      #   f.writelines(s)
     
