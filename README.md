@@ -17,6 +17,10 @@ Example usage:
 ```bash
 python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.txt
 ```
+## Acknowledgments
+
+- Special thanks to our tutor, [Ghadjeres](https://github.com/Ghadjeres), for their invaluable guidance and support throughout this project.
+
 ## Contributors
 
 - Yessin Moakher ([@fegounna](https://github.com/fegounna))
