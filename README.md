@@ -17,3 +17,11 @@ Example usage:
 ```bash
 python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.txt
 
+## Contributions
+
+- `p`: Pitch
+- `v`: Velocity
+- `d`: Duration
+- `t`: Time
+
+
