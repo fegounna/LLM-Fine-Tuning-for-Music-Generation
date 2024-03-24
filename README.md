@@ -17,7 +17,7 @@ Example usage:
 ```bash
 python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.txt
 ```
-## Contributions
+## Contributors
 
 - Yessin Moakher ([@fegounna](https://github.com/fegounna))
 - Marc Janthial ([@EchoSlash](https://github.com/EchoSlash))
