@@ -17,7 +17,7 @@ from trl import SFTTrainer
 
 model_name = "NousResearch/llama-2-7b-chat-hf"
 dataset_name = "./train.jsonl"
-new_model = "llama-2-7b-custom"
+new_model = "llama-2-7b-music-smidi"
 lora_r = 64
 lora_alpha = 16
 lora_dropout = 0.1
@@ -25,7 +25,7 @@ use_4bit = True
 bnb_4bit_compute_dtype = "float16"
 bnb_4bit_quant_type = "nf4"
 use_nested_quant = False
-output_dir = "./results"
+output_dir = "../results"
 num_train_epochs = 1
 fp16 = False
 bf16 = False
@@ -119,31 +119,5 @@ trainer = SFTTrainer(
     packing=packing,
 )
 trainer.train()
-trainer.model.save_pretrained(new_model)
 
-# Cell 4: Test the model
-logging.set_verbosity(logging.CRITICAL)
-prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n<start> p:26:2 t2 p:26:0 t2 p:2c:9 p:33:8 t12 p:2c:0 p:33:0 t13 p:33:7 t1 p:26:5 t12 p:33:0 t1 p:26:0 t1 p:33:6 t3 p:26:3 t9 p:33:0 t3 p:26:0 t10 p:2c:9 t13 p:2c:0 t2 p:26:5 [/INST]" # replace the command here with something relevant to your task
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
-result = pipe(prompt)
-print(result[0]['generated_text'])
-
-from transformers import pipeline
-
-prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n<start> p:26:2 t2 p:26:0 t2 p:2c:9 p:33:8 t12 p:2c:0 p:33:0 t13 p:33:7 t1 p:26:5 t12 p:33:0 t1 p:26:0 t1 p:33:6 t3 p:26:3 t9 p:33:0 t3 p:26:0 t10 p:2c:9 t13 p:2c:0 t2 p:26:5 [/INST]" # replace the command here with something relevant to your task
-num_new_tokens = 200
-
-num_prompt_tokens = len(tokenizer(prompt)['input_ids'])
-
-max_length = num_prompt_tokens + num_new_tokens
-
-gen = pipeline('text-generation', model=model, tokenizer=tokenizer, max_length=max_length)
-result = gen(prompt)
-print(result[0]['generated_text'].replace(prompt, ''))
-
-"""#Save the Model"""
-
-#Locally
-trainer.save_model(cwd+"/finetuned_model")
-#to the hub
-model.push_to_hub("lucas0/empath-llama-7b", create_pr=1)
+trainer.model.save_pretrained("fegounna/MusicFineTuning/"+new_model)
