@@ -19,7 +19,7 @@ pip install py_midicsv==4.0.0
 ```
 2. Run the script:
 ```bash
-python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.txt
+python midi_textefinal.py /path/to/midis/input.mid output.txt
 ```
 ## Acknowledgments
 
