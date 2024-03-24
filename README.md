@@ -1,11 +1,13 @@
 # Llama2 Music Generation
 
-This repository focuses on fine-tuning Llama2, for music generation tasks. The process involves converting MIDI files to a text-based representation using `midi_textefinal.py` script. The text representation encodes musical notes as quadruplets, where each variable is separated by a colon (`:`). Within each quadruplet, the four variables represent:
+This repository focuses on fine-tuning Llama2 for music generation tasks. The process involves converting MIDI files to a text-based representation using `midi_textefinal.py` script. The text representation encodes musical notes as quadruplets, where each variable is separated by a colon (`:`). Within each quadruplet, the four variables represent:
 
 - `p`: Pitch
 - `v`: Velocity
 - `d`: Duration
 - `t`: Time
+
+After converting MIDI files to text, we proceed to fine-tune the Llama2 model for improved music generation performance.
 
 ## Usage
 
