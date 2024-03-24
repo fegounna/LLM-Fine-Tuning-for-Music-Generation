@@ -1,4 +1,6 @@
 import py_midicsv as pm
+import sys
+
 # Load the MIDI file and parse it into CSV format
 def texte(lieu):
     csv_string = pm.midi_to_csv(r"{}".format(lieu))
@@ -38,7 +40,16 @@ def texte(lieu):
         s+= 'p'+i[0]+':v'+i[1]+':d'+i[2]+':t'+i[3]+' '
     return s
 
-lieu = "../midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o.mid"
-with open("../generated files/example.txt", "w") as file:
-    file.write(texte("../midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o.mid"))
-file.close()
+def main():
+    if len(sys.argv) != 3:
+        print("Usage: python midi_textefinal.py <input_file> <output_file>")
+        sys.exit(1)
+
+    input_file = sys.argv[1]
+    output_file = sys.argv[2]
+
+    with open(output_file, "w") as file:
+        file.write(texte(input_file))
+
+if __name__ == "__main__":
+    main()
