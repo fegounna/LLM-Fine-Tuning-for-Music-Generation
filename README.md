@@ -19,9 +19,12 @@ python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.t
 ```
 ## Contributions
 
-- `p`: Pitch
-- `v`: Velocity
-- `d`: Duration
-- `t`: Time
+- Yessin Moakher(@fegounna)
+- Marc Janthial(@EchoSlash)
+- Charles Benichou--chaffanjon(@chafflarch)
+- Cyprien Laruelle
+- Jules Cognon
+- Damien Fromilhague
+
 
 
