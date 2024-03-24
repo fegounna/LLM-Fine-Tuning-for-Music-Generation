@@ -16,7 +16,7 @@ To convert MIDI files to the required text format, you can use the `midi_textefi
 Example usage:
 ```bash
 python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.txt
-
+```
 ## Contributions
 
 - `p`: Pitch
