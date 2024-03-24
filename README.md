@@ -29,9 +29,9 @@ python midi_textefinal.py /path/to/midis/input.mid output.txt
 
 ## Contributors
 
-- Yessin Moakher ([@fegounna](https://github.com/fegounna))
-- Marc Janthial ([@EchoSlash](https://github.com/EchoSlash))
-- Charles Benichou--chaffanjon ([@chafflarch](https://github.com/chafflarch))
+- Yessin Moakher ([fegounna](https://github.com/fegounna))
+- Marc Janthial ([EchoSlash](https://github.com/EchoSlash))
+- Charles Benichou--chaffanjon ([chafflarch](https://github.com/chafflarch))
 - Cyprien Laruelle
 - Jules Cognon
 - Damien Fromilhague
