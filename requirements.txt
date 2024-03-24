@@ -1,1 +1,1 @@
-request
+llmlingua==0.2.1
