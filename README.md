@@ -19,7 +19,7 @@ python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.t
 ```
 ## Acknowledgments
 
-- Special thanks to our tutor, [Ghadjeres](https://github.com/Ghadjeres), for their invaluable guidance and support throughout this project.
+- Special thanks to our tutor, [Ghadjeres](https://github.com/Ghadjeres), for his guidance and support throughout this project.
 
 ## Contributors
 
