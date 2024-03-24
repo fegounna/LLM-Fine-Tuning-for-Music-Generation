@@ -19,12 +19,13 @@ python midi_textefinal.py --input_dir /path/to/midi/files --output_file output.t
 ```
 ## Contributions
 
-- Yessin Moakher(@fegounna)
-- Marc Janthial(@EchoSlash)
-- Charles Benichou--chaffanjon(@chafflarch)
+- Yessin Moakher ([@fegounna](https://github.com/fegounna))
+- Marc Janthial ([@EchoSlash](https://github.com/EchoSlash))
+- Charles Benichou--chaffanjon ([@chafflarch](https://github.com/chafflarch))
 - Cyprien Laruelle
 - Jules Cognon
 - Damien Fromilhague
+
 
 
 
