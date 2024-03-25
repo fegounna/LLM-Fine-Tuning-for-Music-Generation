@@ -11,9 +11,9 @@ After converting MIDI files to text, we proceed to fine-tune the Llama2 model fo
 
 ## Usage
 
-### Converting MIDI Files to Text Representation
+### Converting a MIDI File to Text Representation
 
-To convert MIDI files to text format, use the `midi_textefinal.py` script as follows:
+To convert a MIDI file to text format, use the `midi_textefinal.py` script as follows:
 
 1. Install dependencies:
 ```bash
@@ -21,7 +21,7 @@ pip install py_midicsv==4.0.0
 ```
 2. Run the script:
 ```bash
-python midi_textefinal.py /path/to/midis/input.mid output.txt
+python midi_textefinal.py /path/input.mid output.txt
 ```
 ## Acknowledgments
 
