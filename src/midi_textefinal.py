@@ -40,16 +40,9 @@ def texte(lieu):
         s+= 'p'+i[0]+':v'+i[1]+':d'+i[2]+':t'+i[3]+' '
     return s
 
-def main():
-    if len(sys.argv) != 3:
-        print("Usage: python midi_textefinal.py <input_file> <output_file>")
-        sys.exit(1)
-
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
+def main(input_file, output_file):
 
     with open(output_file, "w") as file:
         file.write(texte(input_file))
 
-if __name__ == "__main__":
-    main()
+
