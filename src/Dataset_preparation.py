@@ -13,6 +13,10 @@ for file in tqdm(os.listdir(directory)):
   if file.endswith(".midi") or file.endswith(".mid"):
     try:
       s = texte(directory+'/'+file)
+      curr = 3000
+      while(s[curr]!=" "):
+        curr += 1
+      s = s[:curr]
       n = len(s)
       if(n>0):
         i = n//10
