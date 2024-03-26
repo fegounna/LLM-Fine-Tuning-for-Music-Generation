@@ -8,6 +8,3 @@ dependencies:
   - peft
   - bitsandbytes
   - mido
-  - tqdm
-  - pandas
-
