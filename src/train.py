@@ -16,7 +16,7 @@ from trl import SFTTrainer
 """# Define Hyperparameters"""
 
 model_name = "NousResearch/llama-2-7b-chat-hf"
-dataset_name = "./train.jsonl"
+dataset_name = "./Dataset/train.jsonl"
 new_model = "llama-2-7b-music-smidi"
 lora_r = 64
 lora_alpha = 16
@@ -25,7 +25,7 @@ use_4bit = True
 bnb_4bit_compute_dtype = "float16"
 bnb_4bit_quant_type = "nf4"
 use_nested_quant = False
-output_dir = "../results"
+output_dir = "./generated files"
 num_train_epochs = 1
 fp16 = False
 bf16 = False
@@ -48,13 +48,13 @@ packing = False
 device_map = {"": 0}
 
 system_message ="""We will provide you with pieces of music, which are sets of music notes represented by quadruplets, where each variable is separated by ":". Within eacht, the 4 variables are p (pitch), (),duration and (time), each by their value ( example, you may encounter thet p52:v5d1895t212). Here is what each variable to
-- p to the pitch of the note (, p60 to a C3). The pitch difference between2 notes to the ofones that separate them. the velocity note, meaning the intensity or force which the played. d duration note, meaning the duration (in) note be heard. t is the time that separates the instant when the note is played from the instant when the next note will be played. In our syntax, we have arbitrarily chosen, for the last note of each piece, to assign the value -1 to its variable t, in order to detect the end of the respective piece."""
+- p to the pitch of the note (, p60 to a C3). The pitch difference between2 notes to the ofones that separate them. the velocity note, meaning the intensity or force which the played. d duration note, meaning the duration (in) note be heard. t is the time that separates the instant when the note is played from the instant when the next note will be played."""
 
 """#Load Datasets and Train"""
 
 # Load datasets
-train_dataset = load_dataset('json', data_files='../Dataset/train.jsonl', split="train")
-valid_dataset = load_dataset('json', data_files='../Dataset/test.jsonl', split="train")
+train_dataset = load_dataset('json', data_files='./Dataset/train.jsonl', split="train")
+valid_dataset = load_dataset('json', data_files='./Dataset/test.jsonl', split="train")
 
 # Preprocess datasets
 train_dataset_mapped = train_dataset.map(lambda examples: {'text': [f'[INST] <<SYS>>\n{system_message.strip()}\n<</SYS>>\n\n' + prompt + ' [/INST] ' + response for prompt, response in zip(examples['prompt'], examples['response'])]}, batched=True)

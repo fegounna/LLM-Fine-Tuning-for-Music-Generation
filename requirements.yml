@@ -2,10 +2,17 @@ name: env01
 channels:
   - conda-forge
   - HuggingFace
+  - nvidia
+  - pytorch
 dependencies:
   - python==3.10.12
+  - cudatoolkit=12.1
+  - pytorch::pytorch=2.2.1
   - conda-forge::accelerate=0.28.0
-  - HuggingFace::transformers=4.33.3
+  - transformers=4.31.0
   - conda-forge::peft=0.10.0
-  - conda-forge::bitsandbytes=0.43.0
+  - conda-forge::bitsandbytes=0.41.0
   - conda-forge::mido=1.2.10
+  - datasets
+  - numpy
+  - tqdmy
