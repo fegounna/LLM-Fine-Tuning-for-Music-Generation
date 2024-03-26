@@ -1,10 +1,11 @@
 name: env01
 channels:
   - conda-forge
+  - HuggingFace
 dependencies:
   - python==3.10.12
-  - accelerate
-  - transformers
-  - peft
-  - bitsandbytes
-  - mido
+  - conda-forge::accelerate0.28.0
+  - HuggingFace::transformers==4.33.3
+  - conda-forge::peft==0.10.0
+  - conda-forge::bitsandbytes==0.43.0
+  - conda-forge::mido==1.2.10
