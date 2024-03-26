@@ -1,6 +1,6 @@
 import mido
-import pretty_midi
 import os
+import pretty_midi
 
 def DA_modulation(entree, sortie, modulation, debut, fin):
  res = pretty_midi.PrettyMIDI(entree)
@@ -31,4 +31,3 @@ def DA_Tempo(entree,sortie,facteur):
  res.write(sortie)
  
  
-DA_transposition("c:\Users\jc103\Downloads\Johnny-B-Goode-1.mid","c:\Users\jc103\Downloads\Johnny-B-Goode-2.mid",2)
