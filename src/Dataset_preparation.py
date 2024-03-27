@@ -16,7 +16,7 @@ for file in tqdm(os.listdir(directory)):
       s = texte(directory+'/'+file)
       n = len(s)
       if(n>500):
-        curr = min(curr,n)
+        curr = min(3000,n)
         while(curr < n and s[curr]!=" "):
           curr += 1
         s = s[:curr]
@@ -29,6 +29,7 @@ for file in tqdm(os.listdir(directory)):
         prompts.append(S1)
         responses.append(S2)
     except Exception as e:
+      print(e)
       error_counter += 1
       continue
 df = pd.DataFrame({
