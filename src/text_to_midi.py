@@ -1,8 +1,10 @@
 import mido
 from mido import MidiFile, MidiTrack, Message, MetaMessage
 
-with open("../generated files/example.txt", "r") as file:
+with open("../generated files/GMP_s_midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o_augmented_1.txt", "r") as file:
     s = file.read()[:-1]
+
+print(s)
 def create_midi_file(lieu,simplified_midi):
     fichier = MidiFile()
 

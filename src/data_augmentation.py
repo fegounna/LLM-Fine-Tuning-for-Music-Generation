@@ -1,5 +1,4 @@
-import mido
-import os
+
 import pretty_midi
 
 def DA_modulation(entree, sortie, modulation, debut, fin):

@@ -102,13 +102,14 @@ for input_file_name in files:
     output_file_path = os.path.join('../generated files/GMP_s_midis', output_file_name)
     midi_textefinal.main(input_file_path,output_file_path)
 
-# getting rid of midis : 
-if  os.path.exists('../generated files/GMP_midis'):
-    shutil.rmtree('../generated files/GMP_midis')
+
     
 
 
 ###### Truncature :
+    
+
+    # beware to let a space after the last sequence(TO BE DONE)
     
 # on garde les 3000 premiers string, ce qui correspond en moyenne à un peu moins de 3000 tokens
 max_chars = 3000
@@ -122,6 +123,10 @@ for file_name in files :
         content = file.read()
 
     truncated_content = content[:max_chars]
+    # beware of not cutting a motif and leting a space at the end
+    last_space_index = truncated_content.rfind(' ')
+    if last_space_index != -1:
+        truncated_content = truncated_content[:last_space_index]
 
     with open(file_path, 'w') as file:
         file.write(truncated_content)

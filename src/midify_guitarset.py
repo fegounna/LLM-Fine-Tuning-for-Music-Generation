@@ -9,7 +9,7 @@ from interpreter import jams_to_midi
 ###############################################################################################################
 
 # This code generates midi files from the GuitarSet dataset in the folder 'generated files/midi_data_from_jams' 
-
+# Python version must be 3.11 at most to run jams
 ###############################################################################################################
 
 
