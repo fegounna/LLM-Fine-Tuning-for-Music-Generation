@@ -167,4 +167,3 @@ models/
 #data files
 *.mid
 *.midi
-#*.jsonl
