@@ -9,3 +9,12 @@ trl==0.4.7
 mido==1.2.10
 py_midicsv==4.0.0
 scipy==1.12.0
+pretty_midi==0.2.10
+pandas
+numpy
+matplotlib 
+requests
+gdown
+
+# jams :to be add from git : clone repo and  "pip install ."
+# must be in python 3.11 because of it
