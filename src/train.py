@@ -12,11 +12,13 @@ from transformers import (
 )
 from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
+import wandb
+
+
 
 """# Define Hyperparameters"""
 
 model_name = "NousResearch/llama-2-7b-chat-hf"
-dataset_name = "./Dataset/train.jsonl"
 new_model = "llama-2-7b-music-smidi"
 lora_r = 64
 lora_alpha = 16
@@ -25,7 +27,7 @@ use_4bit = True
 bnb_4bit_compute_dtype = "float16"
 bnb_4bit_quant_type = "nf4"
 use_nested_quant = False
-output_dir = "./generated files"
+output_dir = "/Data/Models/"
 num_train_epochs = 1
 fp16 = False
 bf16 = False
@@ -47,6 +49,25 @@ max_seq_length = None
 packing = False
 device_map = {"": 0}
 
+
+
+wandb.init(
+    project="llm_training",
+    config={
+        "model_name": model_name,
+        "learning_rate": learning_rate,
+        "lora_r": lora_r,
+        "lora_alpha": lora_alpha,
+        "lora_dropout": lora_dropout,
+        "per_device_train_batch_size": per_device_train_batch_size,
+        "gradient_accumulation_steps": gradient_accumulation_steps,
+        "optim": optim,
+        "weight_decay": weight_decay,
+    }
+)
+
+
+
 system_message ="""We will provide you with pieces of music, which are sets of music notes represented by quadruplets, where each variable is separated by ":". Within eacht, the 4 variables are p (pitch), (),duration and (time), each by their value ( example, you may encounter thet p52:v5d1895t212). Here is what each variable to
 - p to the pitch of the note (, p60 to a C3). The pitch difference between2 notes to the ofones that separate them. the velocity note, meaning the intensity or force which the played. d duration note, meaning the duration (in) note be heard. t is the time that separates the instant when the note is played from the instant when the next note will be played."""
 
@@ -61,6 +82,7 @@ train_dataset_mapped = train_dataset.map(lambda examples: {'text': [f'[INST] <<S
 valid_dataset_mapped = valid_dataset.map(lambda examples: {'text': [f'[INST] <<SYS>>\n{system_message.strip()}\n<</SYS>>\n\n' + prompt + ' [/INST] ' + response for prompt, response in zip(examples['prompt'], examples['response'])]}, batched=True)
 
 compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
+#QLORA config
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=use_4bit,
     bnb_4bit_quant_type=bnb_4bit_quant_type,
@@ -77,6 +99,8 @@ model.config.pretraining_tp = 1
 tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
+
+#LORA config
 peft_config = LoraConfig(
     lora_alpha=lora_alpha,
     lora_dropout=lora_dropout,
@@ -104,7 +128,9 @@ training_arguments = TrainingArguments(
     lr_scheduler_type=lr_scheduler_type,
     report_to="all",
     evaluation_strategy="steps",
-    eval_steps=5  # Evaluate every 20 steps
+    eval_steps=5,  # Evaluate every 20 steps
+    report_to="wandb",
+    seed=42,
 )
 
 trainer = SFTTrainer(
@@ -119,5 +145,32 @@ trainer = SFTTrainer(
     packing=packing,
 )
 trainer.train()
+wandb.finish()
 
-trainer.model.save_pretrained("fegounna/MusicFineTuning/"+new_model)
+trainer.model.save_pretrained(output_dir+new_model)
+
+# Empty VRAM
+del model
+del trainer
+import gc
+gc.collect()
+gc.collect()
+
+# Reload model in FP16 and merge it with LoRA weights
+base_model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    low_cpu_mem_usage=True,
+    return_dict=True,
+    torch_dtype=torch.float16,
+    device_map=device_map,
+)
+model = PeftModel.from_pretrained(base_model, output_dir+new_model)
+model = model.merge_and_unload()
+
+# Reload tokenizer to save it
+tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = "right"
+
+model.push_to_hub(new_model, use_temp_dir=False)
+tokenizer.push_to_hub(new_model, use_temp_dir=False)
