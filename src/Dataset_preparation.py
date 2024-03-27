@@ -2,11 +2,12 @@ import os
 from tqdm import tqdm
 from midi_textefinal import texte
 import pandas as pd
+import random
 
 prompts =  []
 responses = []
 
-directory = "../midis"
+directory = "./midis"
 error_counter = 0
 
 for file in tqdm(os.listdir(directory)):
@@ -17,9 +18,8 @@ for file in tqdm(os.listdir(directory)):
       while(s[curr]!=" "):
         curr += 1
       s = s[:curr]
-      n = len(s)
-      if(n>0):
-        i = n//10
+      if(s!=''):
+        i = random.randint(150, 450)
         while(s[i]!=' '):
           i +=1
         S1 = s[:i]
@@ -38,5 +38,5 @@ print("number of errors is ",error_counter)
 train_df = df.sample(frac=0.9, random_state=42)
 test_df = df.drop(train_df.index)
 
-train_df.to_json('../Dataset/train.jsonl', orient='records', lines=True)
-test_df.to_json('../Dataset/test.jsonl', orient='records', lines=True)
+train_df.to_json('./Dataset/train.jsonl', orient='records', lines=True)
+test_df.to_json('./Dataset/test.jsonl', orient='records', lines=True)
