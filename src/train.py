@@ -68,8 +68,8 @@ wandb.init(
 
 
 
-system_message ="""We will provide you with pieces of music, which are sets of music notes represented by quadruplets, where each variable is separated by ":". Within eacht, the 4 variables are p (pitch), (),duration and (time), each by their value ( example, you may encounter thet p52:v5d1895t212). Here is what each variable to
-- p to the pitch of the note (, p60 to a C3). The pitch difference between2 notes to the ofones that separate them. the velocity note, meaning the intensity or force which the played. d duration note, meaning the duration (in) note be heard. t is the time that separates the instant when the note is played from the instant when the next note will be played."""
+system_message ="""A piece of music is a set of music notes that are represented by quadruplets. Within each, the 4 variables(separated by ":") are p (pitch), d (duration) and t (time), each by their value (example p52:v5:d1895:t212). Each variable corresponds to :
+p the pitch of the note (example p60 to a C3). The pitch difference between 2 notes corresponds to the number of semitones that separate them / v the velocity note, meaning the intensity or force of the played note / d duration note, meaning the duration (in milliseconds) of the note to be heard / t is the time that separates the instant when the note is played from the instant when the next note will be played. Your job is to complete the composition of ""
 
 """#Load Datasets and Train"""
 
@@ -126,7 +126,6 @@ training_arguments = TrainingArguments(
     warmup_ratio=warmup_ratio,
     group_by_length=group_by_length,
     lr_scheduler_type=lr_scheduler_type,
-    report_to="all",
     evaluation_strategy="steps",
     eval_steps=5,  # Evaluate every 20 steps
     report_to="wandb",
