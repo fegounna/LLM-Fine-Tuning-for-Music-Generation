@@ -68,8 +68,9 @@ wandb.init(
 
 
 
-system_message ="""A piece of music is a set of music notes that are represented by quadruplets. Within each, the 4 variables(separated by ":") are p (pitch), d (duration) and t (time), each by their value (example p52:v5:d1895:t212). Each variable corresponds to :
-p the pitch of the note (example p60 to a C3). The pitch difference between 2 notes corresponds to the number of semitones that separate them / v the velocity note, meaning the intensity or force of the played note / d duration note, meaning the duration (in milliseconds) of the note to be heard / t is the time that separates the instant when the note is played from the instant when the next note will be played. Your job is to complete the composition of ""
+system_message ="""A piece of music is a set of music notes that are represented by quadruplets. Within each, the 4 variables(separated by ":") are p (pitch), d (duration),v (velocity) and t (time), followed by their value (example p52:v5:d1895:t212). 
+p corresponds to the pitch of the note (example p60 for a C3). The pitch difference between 2 notes is the number of semitones that separate them / v the velocity note, the volume of the played note / d duration note, the duration (in milliseconds) of the note to be heard / t the time that separates the instant when the note is played from the instant when the next note will be played.
+Your job is to complete the composition of """
 
 """#Load Datasets and Train"""
 

@@ -14,12 +14,13 @@ for file in tqdm(os.listdir(directory)):
   if file.endswith(".midi") or file.endswith(".mid"):
     try:
       s = texte(directory+'/'+file)
-      curr = 3000
-      while(s[curr]!=" "):
-        curr += 1
-      s = s[:curr]
-      if(s!=''):
-        i = random.randint(150, 450)
+      n = len(s)
+      if(n>500):
+        curr = min(curr,n)
+        while(curr < n and s[curr]!=" "):
+          curr += 1
+        s = s[:curr]
+        i = curr // 10
         while(s[i]!=' '):
           i +=1
         S1 = s[:i]
