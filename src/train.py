@@ -157,7 +157,7 @@ def main():
 
         # Clean up
         wandb.finish()
-    except:
+    except Exception as e:
         print(f"An error occurred: {e}")
         traceback.print_exc()  # This will print the stack trace to stdout
 if __name__ == "__main__":
