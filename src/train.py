@@ -17,8 +17,8 @@ from accelerate import Accelerator
 
 def main():
     # Initialize Accelerator
-    accelerator = Accelerator(ddp_find_unused_parameters=False)
-
+    accelerator = Accelerator()
+    #ddp_find_unused_parameters=False
     # Hyperparameters (Consider moving hyperparameters to a config file)
     model_name = "NousResearch/llama-2-7b-chat-hf"
     new_model = "llama-2-7b-music-smidi"
@@ -37,7 +37,7 @@ def main():
     per_device_train_batch_size = 4
     per_device_eval_batch_size = 4
     gradient_accumulation_steps = 1
-    gradient_checkpointing = False
+    gradient_checkpointing = True
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
@@ -124,7 +124,7 @@ def main():
         #eval_steps=5,  # Evaluate every 20 steps
         report_to="wandb",
         seed=42,
-        #gradient_checkpointing_kwargs={'use_reentrant':False}, #For DDP
+        gradient_checkpointing_kwargs={'use_reentrant':False}, #For DDP
     )
 
     # Initialize SFTTrainer
