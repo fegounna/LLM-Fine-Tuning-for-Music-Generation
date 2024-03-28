@@ -37,7 +37,7 @@ def main():
     per_device_train_batch_size = 4
     per_device_eval_batch_size = 4
     gradient_accumulation_steps = 1
-    gradient_checkpointing = True
+    gradient_checkpointing = False
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
@@ -78,11 +78,13 @@ def main():
         bnb_4bit_compute_dtype=compute_dtype,
         bnb_4bit_use_double_quant=use_nested_quant,
     )
+    device_index = Accelerator().process_index
+    device_map = {"": device_index}
     # Load tokenizer and model
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
-        #device_map=device_map #without DDP
+        device_map=device_map 
         #device_map={'':device_string}, #For DDP
     )
     model.config.use_cache = False
@@ -124,7 +126,7 @@ def main():
         #eval_steps=5,  # Evaluate every 20 steps
         report_to="wandb",
         seed=42,
-        gradient_checkpointing_kwargs={'use_reentrant':False}, #For DDP
+        #gradient_checkpointing_kwargs={'use_reentrant':False}, #For DDP
     )
 
     # Initialize SFTTrainer
