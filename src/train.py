@@ -132,7 +132,7 @@ def main(rank: int, world_size: int):
     }
     )
 
-    ddp_setup(rank,world_size)
+    #ddp_setup(rank,world_size)
 
     device_string = PartialState().process_index #For DDP
     model = AutoModelForCausalLM.from_pretrained(
@@ -170,5 +170,7 @@ def main(rank: int, world_size: int):
 
 
 if __name__ == "__main__":
-    world_size = torch.cuda.device_count()
+    world_size = 2
+    local_rank = 0
+    init_process_group(backend='nccl', rank=local_rank, world_size=world_size)
     mp.spawn(main, args=(world_size,), nprocs=world_size)
