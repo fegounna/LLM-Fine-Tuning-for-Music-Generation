@@ -13,16 +13,15 @@ from transformers import (
 from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
 import wandb
-from accelerate import Accelerator
-
+from accelerate import Accelerator, DistributedDataParallelKwargs
 
 import traceback
 
 def main():
     try:
         os.environ['TORCH_DISTRIBUTED_DEBUG'] = 'DETAIL'
-        # Initialize Accelerator
-        accelerator = Accelerator()
+        ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
+        accelerator = Accelerator(kwargs_handlers=[ddp_kwargs])
         #ddp_find_unused_parameters=False
         # Hyperparameters (Consider moving hyperparameters to a config file)
         model_name = "NousResearch/llama-2-7b-chat-hf"
