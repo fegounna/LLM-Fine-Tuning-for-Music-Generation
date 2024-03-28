@@ -31,11 +31,12 @@ def ddp_setup(rank,world_size):
     init_process_group(backend='nccl', rank=rank, world_size=world_size)
 
 def main(rank: int, world_size: int):
-    
+
     #Put this in Yaml File
     """# Define Hyperparameters"""
     model_name = "NousResearch/llama-2-7b-chat-hf"
     new_model = "llama-2-7b-music-smidi"
+    dataset_name = "fegounna/GMP"
     lora_r = 64
     lora_alpha = 16
     lora_dropout = 0.1
@@ -65,23 +66,8 @@ def main(rank: int, world_size: int):
     packing = False
     device_map = {"": 0}
 
-
-    # You should do this once 
-    system_message ="""A piece of music is a set of music notes that are represented by quadruplets. Within each, the 4 variables(separated by ":") are p (pitch), d (duration),v (velocity) and t (time), followed by their value (example p52:v5:d1895:t212). 
-    p corresponds to the pitch of the note (example p60 for a C3). The pitch difference between 2 notes is the number of semitones that separate them / v the velocity note, the volume of the played note / d duration note, the duration (in milliseconds) of the note to be heard / t the time that separates the instant when the note is played from the instant when the next note will be played.
-    Your job is to complete the composition of """
-
-    """#Load Datasets and Train"""
-
-    # Load datasets
-    train_dataset = load_dataset('json', data_files='./Dataset/train.jsonl', split="train")
-    valid_dataset = load_dataset('json', data_files='./Dataset/test.jsonl', split="train")
-
-    # Preprocess datasets
-    train_dataset_mapped = train_dataset.map(lambda examples: {'text': [f'[INST] <<SYS>>\n{system_message.strip()}\n<</SYS>>\n\n' + prompt + ' [/INST] ' + response for prompt, response in zip(examples['prompt'], examples['response'])]}, batched=True)
-    valid_dataset_mapped = valid_dataset.map(lambda examples: {'text': [f'[INST] <<SYS>>\n{system_message.strip()}\n<</SYS>>\n\n' + prompt + ' [/INST] ' + response for prompt, response in zip(examples['prompt'], examples['response'])]}, batched=True)
-
     ####################################################
+    dataset = load_dataset(dataset_name, split="train")
 
     compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
     #QLORA config
@@ -164,8 +150,7 @@ def main(rank: int, world_size: int):
     tokenizer.padding_side = "right"
     trainer = SFTTrainer(
         model=model,
-        train_dataset=train_dataset_mapped,
-        eval_dataset=valid_dataset_mapped,
+        train_dataset=dataset,
         peft_config=peft_config,
         dataset_text_field="text",
         max_seq_length=max_seq_length,
@@ -175,14 +160,14 @@ def main(rank: int, world_size: int):
     )
     trainer.train()
     trainer.model.save_pretrained(output_dir+new_model)
-    destroy_process_group() #For DDP
-    wandb.finish()
     # Empty VRAM
     del model
     del trainer
     import gc
     gc.collect()
-    gc.collect()
+    destroy_process_group() #For DDP
+    wandb.finish()
+
 
 if __name__ == "__main__":
     world_size = torch.cuda.device_count()
