@@ -20,6 +20,7 @@ import traceback
 
 def main():
     try:
+        os.environ['TORCH_DISTRIBUTED_DEBUG'] = 'DETAIL'
         # Initialize Accelerator
         accelerator = Accelerator()
         #ddp_find_unused_parameters=False
