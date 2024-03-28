@@ -17,7 +17,7 @@ from accelerate import Accelerator
 
 def main():
     # Initialize Accelerator
-    accelerator = Accelerator()
+    accelerator = Accelerator(ddp_find_unused_parameters=False)
 
     # Hyperparameters (Consider moving hyperparameters to a config file)
     model_name = "NousResearch/llama-2-7b-chat-hf"
