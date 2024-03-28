@@ -1,10 +1,16 @@
 import os
+import torch
 from datasets import load_dataset
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
+    BitsAndBytesConfig,
+    HfArgumentParser,
     TrainingArguments,
+    pipeline,
+    logging,
 )
+from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
 import wandb
 from accelerate import Accelerator
@@ -60,7 +66,22 @@ def main():
         "weight_decay": weight_decay,
     }
     )
-
+    compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
+       #QLORA config
+    bnb_config = BitsAndBytesConfig(
+        load_in_4bit=use_4bit,
+        bnb_4bit_quant_type=bnb_4bit_quant_type,
+        bnb_4bit_compute_dtype=compute_dtype,
+        bnb_4bit_use_double_quant=use_nested_quant,
+    )
+    #LORA config
+    peft_config = LoraConfig(
+        lora_alpha=lora_alpha,
+        lora_dropout=lora_dropout,
+        r=lora_r,
+        bias="none",
+        task_type="CAUSAL_LM",
+    )
     # Load dataset
     dataset = load_dataset(dataset_name, split="train")
 
