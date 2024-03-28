@@ -82,13 +82,13 @@ def main():
             bnb_4bit_compute_dtype=compute_dtype,
             bnb_4bit_use_double_quant=use_nested_quant,
         )
-        device_index = Accelerator().process_index
-        device_map = {"": device_index}
+        #device_index = Accelerator().process_index
+        #device_map = {"": device_index}
         # Load tokenizer and model
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             quantization_config=bnb_config,
-            device_map=device_map 
+            #device_map=device_map 
             #device_map={'':device_string}, #For DDP
         )
         model.config.use_cache = False
