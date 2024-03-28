@@ -41,15 +41,35 @@ def main():
     learning_rate = 2e-4
     weight_decay = 0.001
     optim = "paged_adamw_32bit"
-    lr_scheduler_type = "constant"
+    lr_scheduler_type = "cosine"
     max_steps = -1
     warmup_ratio = 0.03
     group_by_length = True
-    save_steps = 25
-    logging_steps = 5
+    save_steps = 0
+    logging_steps = 25
     max_seq_length = None
     packing = False
     device_map = {"": 0}
+
+
+    wandb.init(
+    project="llm_training",
+    config={
+        "model_name": model_name,
+        "learning_rate": learning_rate,
+        "lora_r": lora_r,
+        "lora_alpha": lora_alpha,
+        "lora_dropout": lora_dropout,
+        "per_device_train_batch_size": per_device_train_batch_size,
+        "gradient_accumulation_steps": gradient_accumulation_steps,
+        "optim": optim,
+        "weight_decay": weight_decay,
+    }
+    )
+
+
+
+
 
     ####################################################
     dataset = load_dataset(dataset_name, split="train")
@@ -73,6 +93,20 @@ def main():
         task_type="CAUSAL_LM",
     )
 
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        quantization_config=bnb_config,
+        device_map=device_map #without DDP
+    )
+    model.config.use_cache = False
+    model.config.pretraining_tp = 1
+
+    #Load Tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
+
+
     training_arguments = TrainingArguments(
         output_dir=output_dir,
         num_train_epochs=num_train_epochs,
@@ -91,43 +125,12 @@ def main():
         warmup_ratio=warmup_ratio,
         group_by_length=group_by_length,
         lr_scheduler_type=lr_scheduler_type,
-        evaluation_strategy="steps",
-        eval_steps=25,  # Evaluate every 20 steps
         report_to="wandb",
         seed=42,
     )
 
 
 
-
-    wandb.init(
-    project="llm_training",
-    config={
-        "model_name": model_name,
-        "learning_rate": learning_rate,
-        "lora_r": lora_r,
-        "lora_alpha": lora_alpha,
-        "lora_dropout": lora_dropout,
-        "per_device_train_batch_size": per_device_train_batch_size,
-        "gradient_accumulation_steps": gradient_accumulation_steps,
-        "optim": optim,
-        "weight_decay": weight_decay,
-    }
-    )
-
-
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        quantization_config=bnb_config,
-        device_map=device_map #without DDP
-    )
-    model.config.use_cache = False
-    model.config.pretraining_tp = 1
-
-    #Load Tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-    tokenizer.pad_token = tokenizer.eos_token
-    tokenizer.padding_side = "right"
     trainer = SFTTrainer(
         model=model,
         train_dataset=dataset,
