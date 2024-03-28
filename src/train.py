@@ -51,7 +51,7 @@ def main(rank: int, world_size: int):
     per_device_train_batch_size = 4
     per_device_eval_batch_size = 4
     gradient_accumulation_steps = 1
-    gradient_checkpointing = True
+    gradient_checkpointing = False
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
@@ -111,7 +111,7 @@ def main(rank: int, world_size: int):
         eval_steps=5,  # Evaluate every 20 steps
         report_to="wandb",
         seed=42,
-        gradient_checkpointing_kwargs={'use_reentrant':False}, #For DDP
+        #gradient_checkpointing_kwargs={'use_reentrant':False}, #For DDP
     )
 
 
