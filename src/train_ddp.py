@@ -1,3 +1,8 @@
+import ray
+from ray.train.torch import TorchTrainer
+from ray.train import ScalingConfig
+import ray.train.huggingface.transformers
+
 import os
 import torch
 from datasets import load_dataset
@@ -12,15 +17,9 @@ from transformers import (
 )
 from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
-import wandb
-from accelerate import Accelerator, DistributedDataParallelKwargs
 
-import traceback
 
-def main():
-    accelerator = Accelerator()
-
-    """# Define Hyperparameters"""
+def train_func():
     model_name = "NousResearch/llama-2-7b-chat-hf"
     new_model = "llama-2-7b-music-smidi"
     dataset_name = "fegounna/GMP"
@@ -37,12 +36,12 @@ def main():
     bf16 = False
     per_device_train_batch_size = 4
     gradient_accumulation_steps = 1
-    gradient_checkpointing = False
+    gradient_checkpointing = True
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
     optim = "paged_adamw_32bit"
-    lr_scheduler_type = "cosine"
+    lr_scheduler_type = "constant"
     max_steps = -1
     warmup_ratio = 0.03
     group_by_length = True
@@ -50,44 +49,21 @@ def main():
     logging_steps = 25
     max_seq_length = None
     packing = False
+    device_map = {"": 0}
 
-    wandb.init(
-    project="llm_training",
-    config={
-        "model_name": model_name,
-        "learning_rate": learning_rate,
-        "lora_r": lora_r,
-        "lora_alpha": lora_alpha,
-        "lora_dropout": lora_dropout,
-        "per_device_train_batch_size": per_device_train_batch_size,
-        "gradient_accumulation_steps": gradient_accumulation_steps,
-        "optim": optim,
-        "weight_decay": weight_decay,
-    }
-    )
 
-    # Load dataset
+    ####################################################
     dataset = load_dataset(dataset_name, split="train")
 
-    #QLORA config
     compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
+    #QLORA config
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=use_4bit,
         bnb_4bit_quant_type=bnb_4bit_quant_type,
         bnb_4bit_compute_dtype=compute_dtype,
         bnb_4bit_use_double_quant=use_nested_quant,
     )
-    #device_index = Accelerator().process_index
-    #device_map = {"": device_index}
-    # Load tokenizer and model
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        quantization_config=bnb_config,
-        #device_map=device_map 
-        #device_map={'':device_string}, #For DDP
-    )
-    model.config.use_cache = False
-    model.config.pretraining_tp = 1
+    #####################
 
     #LORA config
     peft_config = LoraConfig(
@@ -98,10 +74,19 @@ def main():
         task_type="CAUSAL_LM",
     )
 
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        quantization_config=bnb_config,
+        device_map=device_map 
+    )
+    model.config.use_cache = False
+    model.config.pretraining_tp = 1
 
+    #Load Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
+
 
     training_arguments = TrainingArguments(
         output_dir=output_dir,
@@ -121,11 +106,11 @@ def main():
         warmup_ratio=warmup_ratio,
         group_by_length=group_by_length,
         lr_scheduler_type=lr_scheduler_type,
-        report_to="wandb",
         seed=42,
     )
 
-    # Initialize SFTTrainer
+
+
     trainer = SFTTrainer(
         model=model,
         train_dataset=dataset,
@@ -137,18 +122,20 @@ def main():
         packing=packing,
     )
 
-    # Prepare everything with accelerator
-    model, trainer = accelerator.prepare(model, trainer)
+    trainer = ray.train.huggingface.transformers.prepare_trainer(trainer)
 
-    # Train
     trainer.train()
 
-    # Save model (only from the main process)
-    if accelerator.is_main_process:
-        trainer.model.save_pretrained(output_dir + new_model)
 
-    # Clean up
-    wandb.finish()
 
 if __name__ == "__main__":
-    main()
+    # Init Ray cluster
+    ray.init(address="auto")
+
+    ray_trainer = TorchTrainer(
+        train_func,
+        scaling_config=ScalingConfig(num_workers=2, use_gpu=True),
+    )
+
+    result: ray.train.Result = ray_trainer.fit()
+    print(result.path)
