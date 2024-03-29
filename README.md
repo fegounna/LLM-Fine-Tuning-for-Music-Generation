@@ -34,8 +34,20 @@ pip install mido==1.3.2
 ```
 2. Run the script:
 ```bash
-python text_to_midi.py ./input.text output.mid
+python text_to_midi.py ./input.txt output.mid
 ```
+### Generating Music
+To complete the generation of music from a text representation, use the `inference.py` script as follows:
+1. Install dependencies:
+```bash
+pip install -r requirements_training.txt
+```
+2. Run the script:
+```bash
+python inference.py ./input.txt output.mid
+```
+## Example:
+Given the Prompt :
 
 ## Acknowledgments
 
