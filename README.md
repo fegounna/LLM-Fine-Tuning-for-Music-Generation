@@ -44,7 +44,7 @@ pip install -r requirements_training.txt
 ```
 2. Run the script:
 ```bash
-python inference.py ./input.txt output.mid
+python inference.py ./input.txt output.txt
 ```
 ## Example:
 Given the Prompt :
