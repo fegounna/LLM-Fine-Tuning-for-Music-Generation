@@ -138,7 +138,7 @@ def train_func():
 
 if __name__ == "__main__":
     # Init Ray cluster
-    ray.init(address="auto")
+    ray.init(address="auto", ignore_reinit_error=True)
 
     ray_trainer = TorchTrainer(
         train_func,
