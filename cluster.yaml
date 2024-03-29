@@ -16,3 +16,5 @@ head_start_ray_commands:
 worker_start_ray_commands:
   - ray stop
   - ray start --address=129.104.253.39:6379 --block --num-gpus=1
+setup_commands:
+  - echo "source ~/miniconda3/etc/profile.d/conda.sh && conda activate env01" | bash
