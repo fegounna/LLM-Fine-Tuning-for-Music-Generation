@@ -23,13 +23,13 @@ from transformers import (
 from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
 
+dataset_name = "fegounna/GMP"
 dataset = load_dataset(dataset_name, split="train")
 ray_train_ds = ray.data.from_huggingface(dataset) 
 
 def train_func():
     model_name = "NousResearch/llama-2-7b-chat-hf"
     new_model = "llama-2-7b-music-smidi"
-    dataset_name = "fegounna/GMP"
     lora_r = 64
     lora_alpha = 16
     lora_dropout = 0.1
