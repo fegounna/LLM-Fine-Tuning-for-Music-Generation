@@ -50,7 +50,6 @@ python inference.py ./input.txt output.txt
 Given the Prompt :
 <audio controls>
   <source src="https://raw.githubusercontent.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/blob/master/examples/prompt.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
 </audio>
 
 ## Acknowledgments
