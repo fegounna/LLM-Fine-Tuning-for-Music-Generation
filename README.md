@@ -48,9 +48,11 @@ python inference.py ./input.txt output.txt
 ```
 ## Example:
 Given the Prompt :
-<audio controls>
-  <source src="https://raw.githubusercontent.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/master/examples/prompt.mp3" type="audio/mpeg">
-</audio>
+
+
+https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/1b53d5de-0b93-4ce8-89cc-200fb1d13171
+
+
 
 
 ## Acknowledgments
