@@ -2,6 +2,11 @@ import ray
 from ray.train.torch import TorchTrainer
 from ray.train import ScalingConfig
 import ray.train.huggingface.transformers
+from ray.train.huggingface.transformers import (
+    RayTrainReportCallback,
+    prepare_trainer,
+)
+
 
 import os
 import torch
@@ -18,6 +23,8 @@ from transformers import (
 from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
 
+dataset = load_dataset(dataset_name, split="train")
+ray_train_ds = ray.data.from_huggingface(dataset) 
 
 def train_func():
     model_name = "NousResearch/llama-2-7b-chat-hf"
@@ -34,9 +41,7 @@ def train_func():
     num_train_epochs = 1
     fp16 = False
     bf16 = False
-    per_device_train_batch_size = 4
-    gradient_accumulation_steps = 1
-    gradient_checkpointing = True
+    gradient_checkpointing = False
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
@@ -52,8 +57,7 @@ def train_func():
     device_map = {"": 0}
 
 
-    ####################################################
-    dataset = load_dataset(dataset_name, split="train")
+    ####################################################   
 
     compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
     #QLORA config
@@ -87,12 +91,15 @@ def train_func():
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
 
+    train_dataset = ray.train.get_dataset_shard("train")
+    train_iterable_ds = train_dataset.iter_torch_batches(batch_size=4)
+
+    
+
 
     training_arguments = TrainingArguments(
         output_dir=output_dir,
         num_train_epochs=num_train_epochs,
-        per_device_train_batch_size=per_device_train_batch_size,
-        gradient_accumulation_steps=gradient_accumulation_steps,
         optim=optim,
         save_steps=save_steps,
         logging_steps=logging_steps,
@@ -113,7 +120,7 @@ def train_func():
 
     trainer = SFTTrainer(
         model=model,
-        train_dataset=dataset,
+        train_dataset=train_iterable_ds,
         peft_config=peft_config,
         dataset_text_field="text",
         max_seq_length=max_seq_length,
@@ -121,8 +128,9 @@ def train_func():
         args=training_arguments,
         packing=packing,
     )
+    trainer.add_callback(RayTrainReportCallback())
 
-    trainer = ray.train.huggingface.transformers.prepare_trainer(trainer)
+    trainer = prepare_trainer(trainer)
 
     trainer.train()
 
@@ -135,7 +143,6 @@ if __name__ == "__main__":
     ray_trainer = TorchTrainer(
         train_func,
         scaling_config=ScalingConfig(num_workers=2, use_gpu=True),
+        datasets={"train": ray_train_ds},
     )
-
-    result: ray.train.Result = ray_trainer.fit()
-    print(result.path)
+    result = ray_trainer.fit()
