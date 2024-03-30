@@ -33,7 +33,7 @@ def tokenize_function(examples):
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
-    ret =  tokenizer(list(examples["text"]), padding="max_length", truncation=True, max_length=3000, return_tensors="np")
+    ret =  tokenizer(list(examples["text"]), padding="max_length", truncation=True, max_length=1024, return_tensors="np")
     ret["labels"] = ret["input_ids"].copy()
     return dict(ret)
 
