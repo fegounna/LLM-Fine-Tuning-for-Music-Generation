@@ -56,7 +56,7 @@ def train_func():
     num_train_epochs = 1
     fp16 = False
     bf16 = False
-    gradient_checkpointing = False
+    gradient_checkpointing = True
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
