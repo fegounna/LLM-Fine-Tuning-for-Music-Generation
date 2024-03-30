@@ -22,7 +22,7 @@ from transformers import (
     logging,
     default_data_collator,
 )
-from peft import LoraConfig, PeftModel
+from peft import LoraConfig, PeftModel, get_peft_model
 
 model_name = "NousResearch/llama-2-7b-chat-hf"
 dataset_name = "fegounna/GMP"
