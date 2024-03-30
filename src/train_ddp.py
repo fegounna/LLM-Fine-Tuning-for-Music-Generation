@@ -42,6 +42,7 @@ tokenized_ray_dataset  = {"train": tokenized_ray_dataset}
 
 
 def train_func():
+    torch.checkpoint use_reentrant=True
     torch.backends.cuda.matmul.allow_tf32 = True
     model_name = "NousResearch/llama-2-7b-chat-hf"
     new_model = "llama-2-7b-music-smidi"
