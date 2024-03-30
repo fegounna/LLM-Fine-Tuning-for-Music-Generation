@@ -155,7 +155,7 @@ def train_func():
 
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     # Init Ray cluster
     ray.init(address="auto", ignore_reinit_error=True)
     storage_path = "/users/eleves-a/2022/yessin.moakher/Models"
