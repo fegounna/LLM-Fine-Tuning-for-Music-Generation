@@ -158,7 +158,7 @@ def train_func():
 if _name_ == "_main_":
     # Init Ray cluster
     ray.init(address="auto", ignore_reinit_error=True)
-    storage_path = "s3://your-bucket-here"
+    storage_path = "/users/eleves-a/2022/yessin.moakher/Models"
     ray_trainer = TorchTrainer(
         train_func,
         scaling_config=ScalingConfig(num_workers=2, use_gpu=True),
