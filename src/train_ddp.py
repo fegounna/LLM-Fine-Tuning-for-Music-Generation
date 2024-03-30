@@ -12,6 +12,7 @@ import os
 import torch
 from datasets import load_dataset
 from transformers import (
+    Trainer,
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,
@@ -19,13 +20,26 @@ from transformers import (
     TrainingArguments,
     pipeline,
     logging,
+    default_data_collator,
 )
 from peft import LoraConfig, PeftModel
-from trl import SFTTrainer
 
+model_name = "NousResearch/llama-2-7b-chat-hf"
 dataset_name = "fegounna/GMP"
 dataset = load_dataset(dataset_name, split="train")
-ray_train_ds = ray.data.from_huggingface(dataset) 
+ray_train_ds = ray.data.from_huggingface(dataset)
+
+def tokenize_function(examples):
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
+    ret =  tokenizer(list(examples["text"]), padding="max_length", truncation=True, max_length=3500, return_tensors="np")
+    ret["labels"] = ret["input_ids"].copy()
+    return dict(ret)
+
+tokenized_ray_dataset = ray_train_ds.map_batches(tokenize_function)
+tokenized_ray_dataset  = {"train": tokenized_ray_dataset}
+
 
 def train_func():
     model_name = "NousResearch/llama-2-7b-chat-hf"
@@ -41,7 +55,7 @@ def train_func():
     num_train_epochs = 1
     fp16 = False
     bf16 = False
-    gradient_checkpointing = False
+    gradient_checkpointing = True
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
@@ -85,15 +99,12 @@ def train_func():
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
+    #peft
 
-    #Load Tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-    tokenizer.pad_token = tokenizer.eos_token
-    tokenizer.padding_side = "right"
+    model = get_peft_model(model, peft_config)
 
     train_dataset = ray.train.get_dataset_shard("train")
     train_iterable_ds = train_dataset.iter_torch_batches(batch_size=4)
-
     
 
 
@@ -105,6 +116,8 @@ def train_func():
         logging_steps=logging_steps,
         learning_rate=learning_rate,
         weight_decay=weight_decay,
+        per_device_train_batch_size=4,
+        gradient_accumulation_steps=2,
         fp16=fp16,
         bf16=bf16,
         gradient_checkpointing=gradient_checkpointing,
@@ -114,19 +127,25 @@ def train_func():
         group_by_length=group_by_length,
         lr_scheduler_type=lr_scheduler_type,
         seed=42,
+        report_to="none",
+        label_names=["input_ids", "attention_mask"],
+        push_to_hub=False,
     )
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
 
 
-
-    trainer = SFTTrainer(
+    trainer = Trainer(
         model=model,
         train_dataset=train_iterable_ds,
-        peft_config=peft_config,
-        dataset_text_field="text",
-        max_seq_length=max_seq_length,
+        #peft_config=peft_config,
+        #dataset_text_field="text",
+        #max_seq_length=max_seq_length,
         tokenizer=tokenizer,
         args=training_arguments,
-        packing=packing,
+        #packing=packing,
+        data_collator=default_data_collator,
     )
     trainer.add_callback(RayTrainReportCallback())
 
@@ -136,13 +155,14 @@ def train_func():
 
 
 
-if __name__ == "__main__":
+if _name_ == "_main_":
     # Init Ray cluster
     ray.init(address="auto", ignore_reinit_error=True)
-
+    storage_path = "s3://your-bucket-here"
     ray_trainer = TorchTrainer(
         train_func,
         scaling_config=ScalingConfig(num_workers=2, use_gpu=True),
-        datasets={"train": ray_train_ds},
+        datasets=tokenized_ray_dataset,
+        run_config=RunConfig(storage_path=storage_path),
     )
     result = ray_trainer.fit()
