@@ -132,6 +132,7 @@ def train_func():
         report_to="none",
         label_names=["input_ids", "attention_mask"],
         push_to_hub=False,
+        ddp_find_unused_parameters=False,
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
