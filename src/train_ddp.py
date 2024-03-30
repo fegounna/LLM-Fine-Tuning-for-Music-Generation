@@ -1,6 +1,6 @@
 import ray
 from ray.train.torch import TorchTrainer
-from ray.train import ScalingConfig
+from ray.train import RunConfig, ScalingConfig
 import ray.train.huggingface.transformers
 from ray.train.huggingface.transformers import (
     RayTrainReportCallback,
