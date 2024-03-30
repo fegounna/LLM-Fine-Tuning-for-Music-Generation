@@ -100,7 +100,8 @@ def train_func():
     model.config.use_cache = False
     model.config.pretraining_tp = 1
     #peft
-
+    
+    model.enable_input_require_grads()
     model = get_peft_model(model, peft_config)
 
     train_dataset = ray.train.get_dataset_shard("train")
