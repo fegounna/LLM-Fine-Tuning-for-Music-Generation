@@ -97,9 +97,9 @@ def main():
         task_type="CAUSAL_LM",
     )
 
-    device_string = PartialState().process_index
+    #device_string = PartialState().process_index
 
-    #model = AutoModelForCausalLM.from_pretrained(
+    model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
         #device_map={'':device_string}
