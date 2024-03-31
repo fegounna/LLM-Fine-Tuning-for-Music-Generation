@@ -35,7 +35,7 @@ def main():
     bf16 = False
     per_device_train_batch_size = 4
     per_device_eval_batch_size = 4
-    gradient_accumulation_steps = 1
+    gradient_accumulation_steps = 2
     gradient_checkpointing = True
     max_grad_norm = 0.3
     learning_rate = 2e-4
