@@ -1,7 +1,3 @@
-from accelerate import Accelerator
-from accelerate import PartialState
-from torch.utils.checkpoint import checkpoint
-
 import os
 import torch
 from datasets import load_dataset
@@ -9,10 +5,7 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,
-    HfArgumentParser,
     TrainingArguments,
-    pipeline,
-    logging,
 )
 from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
@@ -45,7 +38,7 @@ def main():
     learning_rate = 2e-4
     weight_decay = 0.001
     optim = "paged_adamw_32bit"
-    lr_scheduler_type = "cosine"
+    lr_scheduler_type = "constant"
     max_steps = -1
     warmup_ratio = 0.03
     group_by_length = True
@@ -55,7 +48,7 @@ def main():
     packing = False
 
 
-    """wandb.init(
+    wandb.init(
     project="llm_training",
     config={
         "model_name": model_name,
@@ -68,10 +61,7 @@ def main():
         "optim": optim,
         "weight_decay": weight_decay,
     }
-    )"""
-
-
-
+    )
 
 
     ####################################################
@@ -124,13 +114,13 @@ def main():
         weight_decay=weight_decay,
         fp16=fp16,
         bf16=bf16,
-        #gradient_checkpointing=gradient_checkpointing,
+        gradient_checkpointing=gradient_checkpointing,
         max_grad_norm=max_grad_norm,
         max_steps=max_steps,
         warmup_ratio=warmup_ratio,
         group_by_length=group_by_length,
         lr_scheduler_type=lr_scheduler_type,
-        #report_to="wandb",
+        report_to="wandb",
         seed=42,
         ddp_find_unused_parameters=False,
     )
