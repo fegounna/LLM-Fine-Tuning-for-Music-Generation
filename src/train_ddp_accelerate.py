@@ -93,7 +93,7 @@ def main():
         model_name,
         quantization_config=bnb_config,
         #device_map={'':device_string},
-        device_map = {"": 0},
+        #device_map = {"": 0},
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
