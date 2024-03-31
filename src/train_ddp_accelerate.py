@@ -46,6 +46,7 @@ def main():
     logging_steps = 25
     max_seq_length = 2500
     packing = False
+    device_map = {"": 0}
 
 
     wandb.init(
@@ -92,6 +93,7 @@ def main():
         model_name,
         quantization_config=bnb_config,
         #device_map={'':device_string},
+        device_map = {"": 0},
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
