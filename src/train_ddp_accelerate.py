@@ -105,7 +105,7 @@ def main():
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
-    model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+    #model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
     #Load Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
