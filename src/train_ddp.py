@@ -6,6 +6,7 @@ from ray.train.huggingface.transformers import (
     RayTrainReportCallback,
     prepare_trainer,
 )
+from torch.utils.checkpoint import checkpoint
 
 
 import os
