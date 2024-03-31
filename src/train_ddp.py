@@ -43,7 +43,7 @@ tokenized_ray_dataset  = {"train": tokenized_ray_dataset}
 
 
 def train_func():
-    torch.checkpoint.use_reentrant=False
+    #torch.checkpoint.use_reentrant=False
     torch.backends.cuda.matmul.allow_tf32 = True
     model_name = "NousResearch/llama-2-7b-chat-hf"
     new_model = "llama-2-7b-music-smidi"
@@ -166,7 +166,7 @@ if __name__ == "__main__":
     storage_path = "/users/eleves-a/2022/yessin.moakher/Models"
     ray_trainer = TorchTrainer(
         train_func,
-        scaling_config=ScalingConfig(num_workers=2, use_gpu=True),
+        scaling_config=ScalingConfig(num_workers=8, use_gpu=True,trainer_resources={"CPU": 4, "GPU": 2},worker_resources={"CPU": 4, "GPU": 1}),
         datasets=tokenized_ray_dataset,
         run_config=RunConfig(storage_path=storage_path),
     )
