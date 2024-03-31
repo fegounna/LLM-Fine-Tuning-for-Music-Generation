@@ -166,7 +166,7 @@ if __name__ == "__main__":
     storage_path = "/users/eleves-a/2022/yessin.moakher/Models"
     ray_trainer = TorchTrainer(
         train_func,
-        scaling_config=ScalingConfig(num_workers=8, use_gpu=True),
+        scaling_config=ScalingConfig(num_workers=2, use_gpu=True,num_cpus_per_worker=4,num_gpus_per_worker=1),
         datasets=tokenized_ray_dataset,
         run_config=RunConfig(storage_path=storage_path),
     )
