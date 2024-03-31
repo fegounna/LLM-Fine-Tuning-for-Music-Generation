@@ -20,7 +20,7 @@ import wandb
 
 
 def main():
-    torch.checkpoint.use_reentrant=False
+    #torch.checkpoint.use_reentrant=False
     torch.backends.cuda.matmul.allow_tf32 = True
 
     """# Define Hyperparameters"""
@@ -34,7 +34,7 @@ def main():
     bnb_4bit_compute_dtype = "float16"
     bnb_4bit_quant_type = "nf4"
     use_nested_quant = False
-    output_dir = "/Data/Models/"
+    output_dir = "/users/eleves-a/2022/yessin.moakher/Models"
     num_train_epochs = 1
     fp16 = False
     bf16 = False
@@ -55,7 +55,7 @@ def main():
     packing = False
 
 
-    wandb.init(
+    """wandb.init(
     project="llm_training",
     config={
         "model_name": model_name,
@@ -68,7 +68,7 @@ def main():
         "optim": optim,
         "weight_decay": weight_decay,
     }
-    )
+    )"""
 
 
 
@@ -96,12 +96,12 @@ def main():
         task_type="CAUSAL_LM",
     )
 
-    #device_string = PartialState().process_index
+    device_string = PartialState().process_index
 
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
-        #device_map={'':device_string}
+        device_map={'':device_string}
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
@@ -130,7 +130,7 @@ def main():
         warmup_ratio=warmup_ratio,
         group_by_length=group_by_length,
         lr_scheduler_type=lr_scheduler_type,
-        report_to="wandb",
+        #report_to="wandb",
         seed=42,
         ddp_find_unused_parameters=False,
     )
