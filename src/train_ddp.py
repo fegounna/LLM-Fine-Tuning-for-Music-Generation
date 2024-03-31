@@ -54,7 +54,7 @@ def train_func():
     bnb_4bit_compute_dtype = "float16"
     bnb_4bit_quant_type = "nf4"
     use_nested_quant = False
-    output_dir = "/Data/Models/"
+    output_dir = "/users/eleves-a/2022/yessin.moakher/Models"
     num_train_epochs = 1
     fp16 = False
     bf16 = False
