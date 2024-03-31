@@ -101,7 +101,7 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         quantization_config=bnb_config,
-        device_map={'':device_string}
+        device_map={'':device_string},
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
