@@ -20,8 +20,7 @@ import wandb
 
 
 def main():
-    accelerator = Accelerator()
-    #torch.checkpoint.use_reentrant=True
+    torch.checkpoint.use_reentrant=False
     torch.backends.cuda.matmul.allow_tf32 = True
 
     """# Define Hyperparameters"""
