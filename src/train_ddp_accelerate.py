@@ -27,7 +27,7 @@ def main():
     bnb_4bit_compute_dtype = "float16"
     bnb_4bit_quant_type = "nf4"
     use_nested_quant = False
-    output_dir = "/users/eleves-a/2022/yessin.moakher/Models"
+    output_dir = "/users/eleves-a/2022/yessin.moakher/"
     num_train_epochs = 1
     fp16 = False
     bf16 = False
@@ -44,7 +44,7 @@ def main():
     group_by_length = True
     save_steps = 0
     logging_steps = 25
-    max_seq_length = 2500
+    max_seq_length = 2000
     packing = False
     device_map = {"": 0}
 
