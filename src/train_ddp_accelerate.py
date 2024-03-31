@@ -123,6 +123,7 @@ def main():
         report_to="wandb",
         seed=42,
         ddp_find_unused_parameters=False,
+        torch_compile=True,
     )
 
 
