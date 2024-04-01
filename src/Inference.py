@@ -4,7 +4,7 @@ from peft import PeftConfig, PeftModel
 
 
 
-peft_model_id = '~/llama-2-7b-music-smidi/'
+peft_model_id = '/users/eleves-a/2022/yessin.moakher/llama-2-7b-music-smidi/'
 model_id = "NousResearch/llama-2-7b-chat-hf"
 device_map = {"": 0}
 #Get PeftConfig from the finetuned Peft Model. This config file contains the path to the base model
