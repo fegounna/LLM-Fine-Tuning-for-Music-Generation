@@ -47,7 +47,7 @@ system_message ="""A piece of music is a set of music notes that are represented
 p corresponds to the pitch of the note (example p60 for a C3). The pitch difference between 2 notes is the number of semitones that separate them / v the velocity note, the volume of the played note / d duration note, the duration (in milliseconds) of the note to be heard / t the time that separates the instant when the note is played from the instant when the next note will be played.
 Your job is to complete the composition of """
 
-s = """p60:v64:d500:t600 p62:v64:d250:t250 p64:v64:d250:t500 p65:v64:d1000:t0"""
+s = """p60:v64:d500:t600 p62:v64:d250:t250 p64:v64:d250:t500 p65:v64:d1000:t700"""
 
 prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
 pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=2000)
