@@ -23,7 +23,7 @@ bnb_config = BitsAndBytesConfig(
 )
 
 ###
-
+logging.set_verbosity_info()
 #Load the base model - if you are not using the bnb_config then remove the quantization_config argument
 #You may or may not need to set use_auth_token to True depending on your model.
 model = AutoModelForCausalLM.from_pretrained(
@@ -40,7 +40,7 @@ tokenizer.padding_side = "right"
 model = PeftModel.from_pretrained(model, peft_model_id)
 
 # Ignore warnings
-logging.set_verbosity(logging.CRITICAL)
+#logging.set_verbosity(logging.CRITICAL)
 
 
 system_message ="""A piece of music is a set of music notes that are represented by quadruplets. Within each, the 4 variables(separated by ":") are p (pitch), d (duration),v (velocity) and t (time), followed by their value (example p52:v5:d1895:t212). 
