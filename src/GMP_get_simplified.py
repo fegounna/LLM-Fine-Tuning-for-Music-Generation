@@ -128,6 +128,10 @@ for file_name in files :
     if last_space_index != -1:
         truncated_content = truncated_content[:last_space_index]
 
+    # adding a space at the end for the convertissor 
+    
+    truncated_content += ' '
+
     with open(file_path, 'w') as file:
         file.write(truncated_content)
 
