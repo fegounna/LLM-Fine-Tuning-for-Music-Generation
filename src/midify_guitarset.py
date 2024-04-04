@@ -25,7 +25,7 @@ if not os.path.exists('../generated files/jams_data'):
 with zipfile.ZipFile(BytesIO(r.content), 'r') as zip_ref:
     zip_ref.extractall('../generated files/jams_data')
 
-
+'''
 #keeping only the solo files
 print('removing files that are not solos')
 # Get list of files in the directory
@@ -38,6 +38,8 @@ for file in files:
         # Remove the file
         os.remove(file_path)
 print('done')
+
+'''
 
 
 
@@ -74,3 +76,7 @@ for file in files:
 
 os.rmdir('../generated files/jams_data')
 print('done')   
+
+
+# tempo à régler
+#

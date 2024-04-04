@@ -10,5 +10,10 @@ matplotlib
 requests
 gdown
 
+<<<<<<< HEAD
 # jams :to be add from git : "git clone https://github.com/marl/jams"  and  "pip install ."
 # must be in python 3.11 because of it
+=======
+# jams :to be added from git : "git clone https://github.com/marl/jams"  and  "pip install ."
+# must be in python 3.11 because of it
+>>>>>>> a5045f2 (ignore)
