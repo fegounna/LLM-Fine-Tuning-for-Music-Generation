@@ -13,6 +13,10 @@ def texte(lieu, pitchbend = False):
     lmidi = []
     temp_pitchbend_value = '8192' # initial value of pitchbend that has no effect on sound
 
+    ###############
+    # TO DO : Quantization of pitbend values ; 
+
+
 
     if pitchbend:
         lfinal = [["0","0","0","0","0","0"]]
@@ -71,8 +75,7 @@ def texte(lieu, pitchbend = False):
             s+= 'p'+i[0]+':v'+i[1]+':d'+i[2]+':t'+i[3]+':b'+i[4]+' ' #b pour pitchbend
         else:   
             s+= 'p'+i[0]+':v'+i[1]+':d'+i[2]+':t'+i[3]+' '
-    print('\n')
-    print(s)
+    
     
     return s
 
@@ -87,9 +90,10 @@ def main(input_file, output_file, pitchbend = False):
 
 
 # for testing
-main("../generated files/midi_data_from_jams/00_BN1-129-Eb_solo.mid","../generated files/00_BN1-129-Eb_solo_converted_NoPB.txt", pitchbend = False)
-main("../generated files/midi_data_from_jams/00_BN1-129-Eb_solo.mid","../generated files/00_BN1-129-Eb_solo_converted_PB.txt", pitchbend = True )
+#main("../generated files/GMP_midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o_augmented_1.mid","../generated files/GMP_midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o_augmented_1.mid_converted_NoPB.txt", pitchbend = False)
+#main("../generated files/GMP_midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o_augmented_1.mid","../generated files/GMP_midis/A., Jag, Je t'aime Juliette, OXC7Fd0ZN8o_augmented_1.mid_converted_PB.txt", pitchbend = True )
 
+#main("../generated files/midi_data_from_jams/00_BN1-129-Eb_solo.mid","../generated files/midi_data_from_jams/00_BN1-129-Eb_solo_PB.txt", pitchbend = True)
 '''
 
 # for testing 
