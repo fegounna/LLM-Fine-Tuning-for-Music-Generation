@@ -133,7 +133,8 @@ def main():
 
     trainer = Trainer(
         model=model,
-        train_dataset=dataset.with_format("torch"),
+        #train_dataset=dataset.with_format("torch"),
+        train_dataset=dataset,
         #peft_config=peft_config,
         #dataset_text_field="text",
         #max_seq_length=max_seq_length,
