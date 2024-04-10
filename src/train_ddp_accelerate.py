@@ -67,7 +67,7 @@ def main():
 
 
     ####################################################
-    dataset = load_dataset(dataset_name, split="train")
+    dataset = load_dataset(dataset_name, split="train",streaming=True)
 
     compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
     #QLORA config
