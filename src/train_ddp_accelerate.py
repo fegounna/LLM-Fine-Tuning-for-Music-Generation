@@ -132,7 +132,7 @@ def main():
 
     trainer = SFTTrainer(
         model=model,
-        train_dataset=dataset,
+        train_dataset=dataset.with_format("torch"),
         peft_config=peft_config,
         dataset_text_field="text",
         max_seq_length=max_seq_length,
