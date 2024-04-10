@@ -41,7 +41,7 @@ def main():
     weight_decay = 0.001
     #optim = "paged_adamw_32bit"
     #lr_scheduler_type = "constant"
-    max_steps = -1
+    max_steps = 10000
     warmup_ratio = 0.03
     group_by_length = True
     save_steps = 0
