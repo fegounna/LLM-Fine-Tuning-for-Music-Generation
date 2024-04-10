@@ -1,12 +1,14 @@
-compute_environment: LOCAL_MACHINE                                                                                                                                                                                                                                   
-distributed_type: MULTI_GPU                                                                                                                                                                                                                                          
+compute_environment: LOCAL_MACHINE                                                                                                                                                                              
+deepspeed_config:
+  deepspeed_config_file: ~/deepspeed.json
+  deepspeed_multinode_launcher: standard
+  zero3_init_flag: false
+distributed_type: DEEPSPEED
 downcast_bf16: 'no'
-gpu_ids: '0'
 machine_rank: 1
 main_process_ip: 129.104.253.39
 main_process_port: 29500
 main_training_function: main
-mixed_precision: 'no'
 num_machines: 4
 num_processes: 4
 rdzv_backend: static
