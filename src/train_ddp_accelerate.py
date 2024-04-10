@@ -45,7 +45,7 @@ def main():
     group_by_length = True
     save_steps = 0
     logging_steps = 25
-    max_seq_length = None
+    max_seq_length = 2000
     packing = False
     device_map = {"": 0}
 
