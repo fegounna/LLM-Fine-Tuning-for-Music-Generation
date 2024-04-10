@@ -20,7 +20,7 @@ def main():
     #model_name = "NousResearch/llama-2-7b-chat-hf"
     model_name= "/Data/Llama-2-7b-hf/"
     new_model = "llama-2-music"
-    dataset_name = "fegounna/GMP"
+    dataset_name = "fegounna/GMP_long"
     lora_r = 64
     lora_alpha = 16
     lora_dropout = 0.1
