@@ -90,7 +90,7 @@ def main():
     #device_string = PartialState().process_index
 
     model = AutoModelForCausalLM.from_pretrained(
-        model_name,
+        "/Data/llama2/",
         quantization_config=bnb_config,
         #device_map={'':device_string},
         #device_map = {"": 0},
