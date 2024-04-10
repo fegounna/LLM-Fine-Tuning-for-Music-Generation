@@ -17,8 +17,8 @@ def main():
     torch.backends.cuda.matmul.allow_tf32 = True
 
     """# Define Hyperparameters"""
-    model_name = "NousResearch/llama-2-7b-chat-hf"
-    new_model = "llama-2-7b-music-smidi"
+    #model_name = "NousResearch/llama-2-7b-chat-hf"
+    new_model = "llama-2-music"
     dataset_name = "fegounna/GMP"
     lora_r = 64
     lora_alpha = 16
@@ -27,7 +27,7 @@ def main():
     bnb_4bit_compute_dtype = "float16"
     bnb_4bit_quant_type = "nf4"
     use_nested_quant = False
-    output_dir = "/users/eleves-a/2022/yessin.moakher/"
+    output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
     num_train_epochs = 1
     fp16 = False
     bf16 = False
@@ -37,14 +37,14 @@ def main():
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
-    optim = "adafactor"
+    optim = "paged_adamw_32bit"
     lr_scheduler_type = "constant"
     max_steps = -1
     warmup_ratio = 0.03
     group_by_length = True
     save_steps = 0
     logging_steps = 25
-    max_seq_length = 2000
+    max_seq_length = None
     packing = False
     device_map = {"": 0}
 
