@@ -2,6 +2,7 @@ import os
 import torch
 from datasets import load_dataset
 from transformers import (
+    Trainer,
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,
@@ -103,7 +104,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
-
+    model = PeftModel.from_pretrained(model, peft_config)
 
     training_arguments = TrainingArguments(
         output_dir=output_dir,
@@ -133,12 +134,12 @@ def main():
     trainer = Trainer(
         model=model,
         train_dataset=dataset.with_format("torch"),
-        peft_config=peft_config,
-        dataset_text_field="text",
-        max_seq_length=max_seq_length,
+        #peft_config=peft_config,
+        #dataset_text_field="text",
+        #max_seq_length=max_seq_length,
         tokenizer=tokenizer,
         args=training_arguments,
-        packing=packing,
+        #packing=packing,
     )
 
     trainer.train()
