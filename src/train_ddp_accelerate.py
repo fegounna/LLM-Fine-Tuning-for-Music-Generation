@@ -18,7 +18,7 @@ def main():
 
     """# Define Hyperparameters"""
     #model_name = "NousResearch/llama-2-7b-chat-hf"
-    model_name= "/Data/llama2/"
+    model_name= "/Data/Llama-2-7b-hf/"
     new_model = "llama-2-music"
     dataset_name = "fegounna/GMP"
     lora_r = 64
