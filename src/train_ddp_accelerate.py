@@ -130,7 +130,7 @@ def main():
 
 
 
-    trainer = SFTTrainer(
+    trainer = Trainer(
         model=model,
         train_dataset=dataset.with_format("torch"),
         peft_config=peft_config,
