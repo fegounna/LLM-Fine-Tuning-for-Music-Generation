@@ -104,7 +104,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
-    model = PeftModel.from_pretrained(model, peft_config)
+    model = get_peft_model(model, peft_config)
 
     training_arguments = TrainingArguments(
         output_dir=output_dir,
