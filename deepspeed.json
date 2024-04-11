@@ -1,11 +1,6 @@
 {
     "fp16": {
-        "enabled": "auto",
-        "loss_scale": "auto",
-        "loss_scale_window": "auto",
-        "initial_scale_power": "auto",
-        "hysteresis": "auto",
-        "min_loss_scale": "auto"
+        "enabled": "auto"
     },
     "optimizer": {
         "type": "AdamW",
