@@ -33,8 +33,8 @@ def main():
     num_train_epochs = 1
     fp16 = False
     bf16 = False
-    #per_device_train_batch_size = 4
-    #gradient_accumulation_steps = 1
+    per_device_train_batch_size = 4
+    gradient_accumulation_steps = 1
     gradient_checkpointing = True
     max_grad_norm = 0.3
     learning_rate = 2e-4
@@ -109,8 +109,8 @@ def main():
     training_arguments = TrainingArguments(
         output_dir=output_dir,
         num_train_epochs=num_train_epochs,
-        #per_device_train_batch_size=per_device_train_batch_size,
-        #gradient_accumulation_steps=gradient_accumulation_steps,
+        per_device_train_batch_size=per_device_train_batch_size,
+        gradient_accumulation_steps=gradient_accumulation_steps,
         #optim=optim,
         save_steps=save_steps,
         logging_steps=logging_steps,
