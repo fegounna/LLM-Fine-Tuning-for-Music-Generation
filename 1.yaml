@@ -1,6 +1,6 @@
 compute_environment: LOCAL_MACHINE                                                                                                                                                                               
 deepspeed_config:
-  deepspeed_config_file: /Data/LLM-Fine-Tuning-for-Music-Generation/deepspeed.json
+  deepspeed_config_file: "/Data/LLM-Fine-Tuning-for-Music-Generation/deepspeed.json"
   deepspeed_multinode_launcher: standard
   zero3_init_flag: false
 distributed_type: DEEPSPEED
