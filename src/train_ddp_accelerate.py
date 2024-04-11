@@ -39,8 +39,8 @@ def main():
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
-    #optim = "paged_adamw_32bit"
-    #lr_scheduler_type = "cosine"
+    optim = "paged_adamw_32bit"
+    lr_scheduler_type = "cosine"
     max_steps = -1
     warmup_ratio = 0.03
     group_by_length = True
@@ -111,7 +111,7 @@ def main():
         num_train_epochs=num_train_epochs,
         per_device_train_batch_size=per_device_train_batch_size,
         gradient_accumulation_steps=gradient_accumulation_steps,
-        #optim=optim,
+        optim=optim,
         save_steps=save_steps,
         logging_steps=logging_steps,
         learning_rate=learning_rate,
@@ -123,7 +123,7 @@ def main():
         max_steps=max_steps,
         warmup_ratio=warmup_ratio,
         group_by_length=group_by_length,
-        #lr_scheduler_type=lr_scheduler_type,
+        lr_scheduler_type=lr_scheduler_type,
         report_to="wandb",
         seed=42,
         ddp_find_unused_parameters=False,
