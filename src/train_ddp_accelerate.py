@@ -40,13 +40,13 @@ def main():
     learning_rate = 2e-4
     weight_decay = 0.001
     #optim = "paged_adamw_32bit"
-    #lr_scheduler_type = "constant"
-    max_steps = 10000
+    #lr_scheduler_type = "cosine"
+    max_steps = -1
     warmup_ratio = 0.03
     group_by_length = True
     save_steps = 0
     logging_steps = 25
-    max_seq_length = 2000
+    max_seq_length = 2048
     packing = False
     device_map = {"": 0}
 
@@ -68,7 +68,7 @@ def main():
 
 
     ####################################################
-    dataset = load_dataset(dataset_name, split="train",streaming=True)
+    dataset = load_dataset(dataset_name, split="train")
 
     compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
     #QLORA config
@@ -104,7 +104,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
-    model = get_peft_model(model, peft_config)
+    #model = get_peft_model(model, peft_config)
 
     training_arguments = TrainingArguments(
         output_dir=output_dir,
@@ -131,16 +131,16 @@ def main():
 
 
 
-    trainer = Trainer(
+    trainer = SFTTrainer(
         model=model,
         #train_dataset=dataset.with_format("torch"),
         train_dataset=dataset,
-        #peft_config=peft_config,
-        #dataset_text_field="text",
-        #max_seq_length=max_seq_length,
+        peft_config=peft_config,
+        dataset_text_field="text",
+        max_seq_length=max_seq_length,
         tokenizer=tokenizer,
         args=training_arguments,
-        #packing=packing,
+        packing=packing,
     )
 
     trainer.train()
