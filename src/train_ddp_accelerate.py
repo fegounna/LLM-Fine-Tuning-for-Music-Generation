@@ -21,7 +21,7 @@ def main():
     #model_name = "NousResearch/llama-2-7b-chat-hf"
     model_name= "/Data/Llama-2-7b-hf/"
     new_model = "llama-2-music"
-    dataset_name = "fegounna/GMP_long"
+    dataset_name = "fegounna/GMP_long_"
     lora_r = 64
     lora_alpha = 16
     lora_dropout = 0.1
@@ -33,7 +33,7 @@ def main():
     num_train_epochs = 1
     fp16 = False
     bf16 = False
-    per_device_train_batch_size = 1
+    per_device_train_batch_size = 4
     gradient_accumulation_steps = 1
     gradient_checkpointing = True
     max_grad_norm = 0.3
