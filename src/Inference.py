@@ -5,14 +5,14 @@ from peft import PeftConfig, PeftModel
 
 
 peft_model_id = 'fegounna/Modelsllama-2-7b-music-smidi'
-model_id = "NousResearch/llama-2-7b-chat-hf"
+model_id = "/Data/Llama-2-7b-hf/"
 device_map = {"": 0}
 #Get PeftConfig from the finetuned Peft Model. This config file contains the path to the base model
 
 # If you quantized the model while finetuning using bits and bytes 
 # and want to load the model in 4bit for inference use the following code.
 # NOTE: Make sure the quant and compute types match what you did during finetuning
-
+"""
 compute_dtype = getattr(torch, "float16")
 #QLORA config
 bnb_config = BitsAndBytesConfig(
@@ -20,17 +20,22 @@ bnb_config = BitsAndBytesConfig(
     bnb_4bit_quant_type="nf4",
     bnb_4bit_compute_dtype="float16",
     bnb_4bit_use_double_quant=False,
-)
+)"""
 
 ###
-logging.set_verbosity_info()
 #Load the base model - if you are not using the bnb_config then remove the quantization_config argument
-#You may or may not need to set use_auth_token to True depending on your model.
-model = AutoModelForCausalLM.from_pretrained(
+"""model = AutoModelForCausalLM.from_pretrained(
     model_id,
     quantization_config=bnb_config,
     #use_auth_token=True,
     torch_dtype=torch.bfloat16,
+    device_map=device_map,
+)"""
+base_model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    low_cpu_mem_usage=True,
+    return_dict=True,
+    torch_dtype=torch.float16,
     device_map=device_map,
 )
 tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
@@ -38,9 +43,10 @@ tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 
 model = PeftModel.from_pretrained(model, peft_model_id)
+model = model.merge_and_unload()
 
 # Ignore warnings
-#logging.set_verbosity(logging.CRITICAL)
+logging.set_verbosity(logging.CRITICAL)
 
 
 system_message ="""A piece of music is a set of music notes that are represented by quadruplets. Within each, the 4 variables(separated by ":") are p (pitch), d (duration),v (velocity) and t (time), followed by their value (example p52:v5:d1895:t212). 
