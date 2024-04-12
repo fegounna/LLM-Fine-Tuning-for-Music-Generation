@@ -39,7 +39,7 @@ def main():
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
-    optim = "Adafactor"
+    optim = "adafactor"
     lr_scheduler_type = "cosine"
     max_steps = -1
     warmup_ratio = 0.03
