@@ -51,6 +51,6 @@ Your job is to complete the composition of """
 s = """p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:t5 p81:v78:d389:t117 p76:v68:d157:t5 p57:v60:d397:t154 p84:v87:d405:t1 p45:v79:d404:t1 p76:v67:d241:t121 p81:v79:d289:t1 p52:v60:d404:t123 p57:v69:d403:t3 p76:v73:d162:t159 p84:v90:d403:t1"""
 
 prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=1024)
+pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,penalty_alpha=0.6, top_k=4, max_length=1024)
 result = pipe(prompt)
 print(result[0]['generated_text'])
