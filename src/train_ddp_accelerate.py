@@ -20,7 +20,7 @@ def main():
     """# Define Hyperparameters"""
     #model_name = "NousResearch/llama-2-7b-chat-hf"
     model_name= "/Data/Llama-2-7b-hf/"
-    new_model = "llama-2-music"
+    new_model = "llama-2-music_1k"
     dataset_name = "fegounna/GMP_long_"
     lora_r = 64
     lora_alpha = 16
@@ -39,14 +39,15 @@ def main():
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
-    optim = "adafactor"
+    #optim = "adafactor"
+    optim = "paged_adamw_32bit"
     lr_scheduler_type = "cosine"
     max_steps = -1
     warmup_ratio = 0.03
     group_by_length = True
     save_steps = 0
     logging_steps = 25
-    max_seq_length = 2048
+    max_seq_length = 1024
     packing = False
     device_map = {"": 0}
 
