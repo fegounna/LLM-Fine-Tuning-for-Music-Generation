@@ -42,7 +42,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_id, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 
-model = PeftModel.from_pretrained(model, peft_model_id)
+model = PeftModel.from_pretrained(base_model, peft_model_id)
 model = model.merge_and_unload()
 
 # Ignore warnings
