@@ -36,7 +36,7 @@ def main():
     bf16 = False
     per_device_train_batch_size = 4
     gradient_accumulation_steps = 1
-    gradient_checkpointing = True
+    #gradient_checkpointing = True
     max_grad_norm = 0.3
     learning_rate = 2e-4
     weight_decay = 0.001
@@ -48,7 +48,7 @@ def main():
     group_by_length = True
     save_steps = 0
     logging_steps = 25
-    max_seq_length = 3048
+    "max_seq_length = 3048
     packing = False
     device_map = {"": 0}
 
@@ -131,7 +131,7 @@ def main():
         weight_decay=weight_decay,
         fp16=fp16,
         bf16=bf16,
-        gradient_checkpointing=gradient_checkpointing,
+        #gradient_checkpointing=gradient_checkpointing,
         max_grad_norm=max_grad_norm,
         max_steps=max_steps,
         warmup_ratio=warmup_ratio,
@@ -150,7 +150,7 @@ def main():
         train_dataset=dataset,
         #peft_config=peft_config,
         dataset_text_field="text",
-        max_seq_length=max_seq_length,
+        #max_seq_length=max_seq_length,
         tokenizer=tokenizer,
         args=training_arguments,
         packing=packing,
