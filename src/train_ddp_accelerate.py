@@ -107,7 +107,7 @@ def main():
         lora_dropout = 0,
         bias = "none",
         use_gradient_checkpointing = True,
-        random_state = 3407,
+        random_state = 42,
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
