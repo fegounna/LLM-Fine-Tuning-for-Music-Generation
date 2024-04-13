@@ -100,6 +100,14 @@ def main():
         #device_map = {"": 0},
         #use_flash_attention_2=True,
         attn_implementation="flash_attention_2",
+        r = 16,
+        target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
+                      "gate_proj", "up_proj", "down_proj",],
+        lora_alpha = 16,
+        lora_dropout = 0,
+        bias = "none",
+        use_gradient_checkpointing = True,
+        random_state = 3407,
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
@@ -139,7 +147,7 @@ def main():
         model=model,
         #train_dataset=dataset.with_format("torch"),
         train_dataset=dataset,
-        peft_config=peft_config,
+        #peft_config=peft_config,
         dataset_text_field="text",
         max_seq_length=max_seq_length,
         tokenizer=tokenizer,
