@@ -23,8 +23,8 @@ def main():
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
     num_train_epochs = 1
     max_steps = -1
-    fp16 = False
-    bf16 = False
+    fp16 = not torch.cuda.is_bf16_supported()
+    bf16 = torch.cuda.is_bf16_supported()
     per_device_train_batch_size = 4
     gradient_accumulation_steps = 1
     optim = "adafactor"
