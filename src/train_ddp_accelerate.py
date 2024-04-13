@@ -108,6 +108,7 @@ def main():
         bias = "none",
         use_gradient_checkpointing = True,
         random_state = 42,
+        max_seq_length = 3048,
     )
     model.config.use_cache = False
     model.config.pretraining_tp = 1
