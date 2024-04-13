@@ -1,6 +1,7 @@
 import os
 import torch
 from datasets import load_dataset
+from unsloth import FastLanguageModel
 from transformers import (
     Trainer,
     AutoModelForCausalLM,
@@ -92,7 +93,7 @@ def main():
 
     #device_string = PartialState().process_index
 
-    model = AutoModelForCausalLM.from_pretrained(
+    model = FastLanguageModel.get_peft_model(
         model_name,
         quantization_config=bnb_config,
         #device_map={'':device_string},
