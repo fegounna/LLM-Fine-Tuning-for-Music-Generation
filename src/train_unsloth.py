@@ -59,7 +59,7 @@ def main():
         loftq_config = None, # And LoftQ
     )
 
-    dataset = load_dataset(dataset_name, split="train[:100000]")
+    dataset = load_dataset(dataset_name, split="train")
     EOS_TOKEN = tokenizer.eos_token
     def formatting_func(example):
         return example["text"] + EOS_TOKEN
