@@ -25,7 +25,7 @@ def main():
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
-    per_device_train_batch_size = 32
+    per_device_train_batch_size = 64
     gradient_accumulation_steps = 1 #last
     optim = "adafactor" #last
     save_steps = 0
@@ -59,7 +59,7 @@ def main():
         loftq_config = None, # And LoftQ
     )
 
-    dataset = load_dataset(dataset_name, split="train[:2000]")
+    dataset = load_dataset(dataset_name, split="train")
     EOS_TOKEN = tokenizer.eos_token
     def formatting_func(example):
         return example["text"] + EOS_TOKEN
