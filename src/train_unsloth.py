@@ -25,7 +25,7 @@ def main():
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
-    per_device_train_batch_size = 64
+    per_device_train_batch_size = 16
     gradient_accumulation_steps = 1 #last
     optim = "adafactor" #last
     save_steps = 0
