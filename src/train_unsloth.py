@@ -26,8 +26,8 @@ def main():
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
     per_device_train_batch_size = 4
-    gradient_accumulation_steps = 1
-    optim = "adafactor"
+    gradient_accumulation_steps = 1 #last
+    optim = "adafactor" #last
     save_steps = 0
     learning_rate = 2e-5
     max_grad_norm = 0.3
@@ -59,8 +59,10 @@ def main():
         loftq_config = None, # And LoftQ
     )
 
-    dataset = load_dataset(dataset_name, split="train[:10000]")
-
+    dataset = load_dataset(dataset_name, split="train")
+    EOS_TOKEN = tokenizer.eos_token
+    def formatting_func(example):
+        return example["text"] + EOS_TOKEN
     training_arguments = TrainingArguments(
         output_dir=output_dir,
         num_train_epochs=num_train_epochs,
@@ -91,6 +93,7 @@ def main():
         tokenizer=tokenizer,
         args=training_arguments,
         packing=packing,
+        formatting_func = formatting_func,
     )
     trainer.train()
     trainer.model.save_pretrained(output_dir+new_model)
