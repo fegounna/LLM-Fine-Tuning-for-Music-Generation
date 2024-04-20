@@ -32,8 +32,8 @@ prompt = f"[INST] <<SYS>> {system_message} <</SYS>> {s} [/INST]"
 #outputs = model.generate(**inputs, max_new_tokens = 512, use_cache = True)
 #print(tokenizer.batch_decode(outputs))
 
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, temperature =0.8,repetition_penalty=1.5,top_p=0.5,max_length=2048)
-                #penalty_alpha=0.6, max_length=1028)
+pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, temperature =0.8,penalty_alpha=0.6,repetition_penalty=1.5,top_p=0.5,max_length=1024)
+                # max_length=1028)
                 #
 result = pipe(prompt)
 print(result[0]['generated_text'])
