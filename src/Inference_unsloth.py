@@ -24,7 +24,8 @@ Your Task is to complete the generation of :"""
 
 
 s="p67:v91:d162:t144 p81:v94:d591:t3 p77:v91:d583:t0 p69:v91:d596:t0 p50:v87:d582:t1"
-prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
+#prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
+prompt = f"[INST] <<SYS>>{system_message}<</SYS>>{s}[INST]" # replace the ????
 
 #inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
 
