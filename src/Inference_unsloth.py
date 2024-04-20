@@ -12,7 +12,7 @@ base_model, tokenizer = FastLanguageModel.from_pretrained(
     load_in_4bit = True,
 )
 #FastLanguageModel.for_inference(base_model)
-model = PeftModel.from_pretrained(base_model, peft_model_id)
+model = FastLanguageModel.PeftModel.from_pretrained(base_model, peft_model_id)
 model = model.merge_and_unload()
 
 # Ignore warnings
