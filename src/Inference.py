@@ -5,8 +5,8 @@ from peft import PeftConfig, PeftModel
 
 
 peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_4k/'
-#model_id = "/Data/Llama-2-7b-hf/"
-model_id ="unsloth/llama-2-7b-bnb-4bit"
+model_id = "/Data/Llama-2-7b-hf/"
+#model_id ="unsloth/llama-2-7b-bnb-4bit"
 device_map = {"": 0}
 #Get PeftConfig from the finetuned Peft Model. This config file contains the path to the base model
 
@@ -58,6 +58,6 @@ Your job is to complete the composition of """
 s = """p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:t5 p81:v78:d389:t117 p76:v68:d157:t5 p57:v60:d397:t154 p84:v87:d405:t1 p45:v79:d404:t1 p76:v67:d241:t121 p81:v79:d289:t1 p52:v60:d404:t123 p57:v69:d403:t3 p76:v73:d162:t159 p84:v90:d403:t1"""
 
 prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,penalty_alpha=0.9, top_p = 0.6, max_length=4096)
+pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,penalty_alpha=0.9, top_p = 0.6,temperature=0.6, max_length=4096)
 result = pipe(prompt)
 print(result[0]['generated_text'])
