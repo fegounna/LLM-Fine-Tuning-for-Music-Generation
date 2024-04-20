@@ -23,7 +23,7 @@ logging.set_verbosity(logging.CRITICAL)
 #Your Task is to complete the generation of :"""
 
 system_message ="""You are a classical pianist composer. In this context, each music note in a musical sequence is described using four parameters: pitch (p) from 0 to 127 (highest pitch), volume (v) from 0 to 127 (loudest), duration of the note (d) in ticks, and the length of the pause (t) in ticks before the next note begins regardless of the previous note's duration. A tick is approximately 5.21 milliseconds. Each parameter is followed by its value and separated by colons (e.g. p52:v57:d195:t212). Your composition should demonstrate a clear progression and development, appropriate pauses, including thoughtful variations in melody, harmony, rhythm. Your Task is to complete the generation of :"""
-s="p57:v77:d73:t125 p59:v55:d43:t98 p60:v84:d817:t265 p62:v57:d45:t232 p64:v73:d69:t227 p66:v72:d103:t259 p59:v69:d384:t7 p67:v70:d377:t461 p62:v72:d37:t1"
+s="p69:v58:d743:t268 p74:v69:d2010:t9 p67:v64:d996:t236 p65:v70:d1766:t234 p79:v94:d1530:t7 p69:v56:d1525:t276 p64:v69:d796:t253 p67:v59:d994:t229 p76:v80:d769:t26 p60:v63:d557:t268 p72:v80:d488:t30 p64:v61:d458:t239"
 #prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
 prompt = f"[INST] <<SYS>> {system_message} <</SYS>> {s} [/INST]" 
 
