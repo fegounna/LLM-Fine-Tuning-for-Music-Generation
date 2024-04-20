@@ -6,14 +6,14 @@ from unsloth import FastLanguageModel
 peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_4k/'
 device_map = {"": 0}
 
-base_model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "unsloth/llama-2-7b-bnb-4bit",
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name = peft_model_id # YOUR MODEL YOU USED FOR TRAINING
     max_seq_length = 4096,
+    dtype = None,
     load_in_4bit = True,
 )
-#FastLanguageModel.for_inference(base_model)
-model = FastLanguageModel.PeftModel.from_pretrained(base_model, peft_model_id)
-model = model.merge_and_unload()
+FastLanguageModel.for_inference(model)
+
 
 # Ignore warnings
 logging.set_verbosity(logging.CRITICAL)
@@ -30,7 +30,7 @@ prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace th
 
 inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
 
-outputs = model.generate(**inputs, max_new_tokens = 64, use_cache = True)
+outputs = model.generate(**inputs, max_new_tokens = 4096, use_cache = True)
 print(tokenizer.batch_decode(outputs))
 
 #pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,penalty_alpha=0.7, top_k=10, max_length=4096)
