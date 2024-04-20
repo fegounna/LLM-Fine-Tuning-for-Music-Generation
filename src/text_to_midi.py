@@ -10,7 +10,11 @@ import midi_textefinal # to test
 # Requires that the simplified_midi file finishes with a blank " " 
 ####################################################################
 
-def create_midi_file(path, simplified_midi, header, pitchbend = False):
+def create_midi_file(input_file_path,output_file_path, header, pitchbend = False):
+
+    with open(input_file_path,"r") as file:
+            simplified_midi = file.read()[:-1] 
+
     l = simplified_midi.split(' ')
     
     
@@ -51,7 +55,9 @@ def create_midi_file(path, simplified_midi, header, pitchbend = False):
         if pitchbend:
             #verifying it is not a Note Off
             if l[i][1]!=0:
-                csv_string.append("2, " + str(l[i][5]) + ", Pitch_bend_c, 0, "  + str(l[i][4]) + "\n")
+                # because of the quantization of pitchbend values we multiply by 128
+                csv_string.append("2, " + str(l[i][5]) + ", Pitch_bend_c, 0, "  + str(l[i][4]) + "\n") 
+                
             csv_string.append("2, " + str(l[i][5]) + ", Note_on_c, 0, " + str(l[i][0]) + ", " + str(l[i][1]) + "\n")
 
         if not pitchbend:
@@ -69,7 +75,7 @@ def create_midi_file(path, simplified_midi, header, pitchbend = False):
 
     midi_object = pm.csv_to_midi(csv_string)
 
-    with open(path, "wb") as output_file :
+    with open(output_file_path, "wb") as output_file :
         midi_writer = pm.FileWriter(output_file)
         midi_writer.write(midi_object)
 
@@ -88,15 +94,11 @@ def dataset_text_to_midi(output_dir_path, input_dir_path,header):
     files = os.listdir(input_dir_path)
     for input_file_name in files:
         
-        id, extension = os.path.splitext(input_file_name)
+        id, _ = os.path.splitext(input_file_name)
         output_file_name =  output_file_name = f"{id}_converted.mid"
         input_file_path = os.path.join(input_dir_path, input_file_name)
         output_file_path = os.path.join(output_dir_path, output_file_name)
-        
-        with open(input_file_path,"r") as file:
-            str = file.read()[:-1] 
-            
-        create_midi_file(output_file_path , str , header)
+        create_midi_file(input_file_path, output_file_path , str , header)
         
 
 
@@ -121,7 +123,7 @@ print("Done")
 
 
 
-
+'''
 # for testing create_midi_file
 
 midi_textefinal.main("../generated files/midi_data_from_jams/00_BN2-166-Ab_solo.mid","../generated files/00_BN2-166-Ab_solo_PB.txt", pitchbend= True)
@@ -137,4 +139,7 @@ create_midi_file("../generated files/00_BN2-166-Ab_solo_PB.mid",
 #midi_textefinal.texte("../generated files/00_BN1-129-Eb_solo_converted_PB.mid",pitchbend=True)
 print('\n\n')
 #midi_textefinal.texte("../generated files/midi_data_from_jams/00_BN1-129-Eb_solo.mid", pitchbend=True)
+
+
+'''
 
