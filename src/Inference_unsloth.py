@@ -29,7 +29,7 @@ prompt = f"[INST] <<SYS>> {system_message} <</SYS>> {s} [/INST]"
 
 #inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
 
-#outputs = model.generate(**inputs, max_new_tokens = 2048, use_cache = True)
+#outputs = model.generate(**inputs, max_new_tokens = 512, use_cache = True)
 #print(tokenizer.batch_decode(outputs))
 
 pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,penalty_alpha=0.6, top_k=5, max_length=4096)
