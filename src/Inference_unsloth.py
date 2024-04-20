@@ -7,7 +7,7 @@ peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_4k/'
 device_map = {"": 0}
 
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = peft_model_id # YOUR MODEL YOU USED FOR TRAINING
+    model_name = peft_model_id, # YOUR MODEL YOU USED FOR TRAINING
     max_seq_length = 4096,
     dtype = None,
     load_in_4bit = True,
