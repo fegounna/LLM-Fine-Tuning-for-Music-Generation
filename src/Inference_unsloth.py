@@ -23,7 +23,7 @@ system_message ="""You are a classical pianist composer. In this context, each m
 Your Task is to complete the generation of :"""
 
 
-s ="p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:t5 p81:v78:d389:t117"
+s="p67:v91:d162:t144 p81:v94:d591:t3 p77:v91:d583:t0 p69:v91:d596:t0 p50:v87:d582:t1"
 prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
 
 #inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
