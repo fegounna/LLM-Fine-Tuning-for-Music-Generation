@@ -26,11 +26,11 @@ Your Task is to complete the generation of :"""
 s ="p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:t5 p81:v78:d389:t117"
 prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
 
-inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
+#inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
 
-outputs = model.generate(**inputs, max_new_tokens = 2048, use_cache = True)
-print(tokenizer.batch_decode(outputs))
+#outputs = model.generate(**inputs, max_new_tokens = 2048, use_cache = True)
+#print(tokenizer.batch_decode(outputs))
 
-#pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,penalty_alpha=0.9, top_p=0.6, max_length=2048)
-#result = pipe(prompt)
-#print(result[0]['generated_text'])
+pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,penalty_alpha=0.9, top_p=0.6, max_length=2048)
+result = pipe(prompt)
+print(result[0]['generated_text'])
