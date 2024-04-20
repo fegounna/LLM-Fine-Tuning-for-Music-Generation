@@ -61,11 +61,8 @@ def main():
 
     dataset = load_dataset(dataset_name, split="train")
     
-    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+    tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
-    EOS_TOKEN = tokenizer.eos_token
-    def formatting_func(example):
-        return example["text"] + EOS_TOKEN
         
     training_arguments = TrainingArguments(
         output_dir=output_dir,
@@ -92,11 +89,11 @@ def main():
     trainer = SFTTrainer(
         model=model,
         train_dataset=dataset,
+        dataset_text_field="text",
         max_seq_length=max_seq_length,
         tokenizer=tokenizer,
         args=training_arguments,
         packing=packing,
-        formatting_func = formatting_func,
     )
     trainer.train()
     trainer.model.save_pretrained(output_dir+new_model)
