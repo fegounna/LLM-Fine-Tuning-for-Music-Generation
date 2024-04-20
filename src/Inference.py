@@ -5,7 +5,8 @@ from peft import PeftConfig, PeftModel
 
 
 peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_4k/'
-model_id = "/Data/Llama-2-7b-hf/"
+#model_id = "/Data/Llama-2-7b-hf/"
+model_id ="unsloth/llama-2-7b-bnb-4bit"
 device_map = {"": 0}
 #Get PeftConfig from the finetuned Peft Model. This config file contains the path to the base model
 
