@@ -15,7 +15,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 FastLanguageModel.for_inference(model)
 
 tokenizer.pad_token = tokenizer.eos_token
-tokenizer.padding_side = "right"
+tokenizer.padding_side = "left"
 # Ignore warnings
 logging.set_verbosity(logging.CRITICAL)
 
