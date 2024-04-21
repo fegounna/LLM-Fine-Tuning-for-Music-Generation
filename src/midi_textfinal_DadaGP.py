@@ -2,44 +2,54 @@ import py_midicsv as pm
 import sys
 
 
+
+
+
+# get the list of possible names for lead tracks : in file DadaGP_bended_track_names.txt
+with open('DadaGP_bended_track_names.txt', 'r') as file:
+    track_names_line = file.readline()
+accounted_track_names  = track_names_line.strip()[1:-1].split(', ')
+
+# Remove any extra quotes and newline characters from each track name
+accounted_track_names = [str(track.strip("'\"\\n")) for track in accounted_track_names]
+accounted_track_names = str(accounted_track_names).replace("'", '"')
+
+
+
+
+
 ####################################################################
 #  We get s_MIDI quadruplets if Pitchbend is not activated
 #  We get s_MIDI quintuplets if Pitchbend is activated
 ####################################################################
 
-
 def to_text(input_file, output_file, pitchbend = False):
     csv_string = pm.midi_to_csv(r"{}".format(input_file))
     lmidi = []
 
-    temp_pitchbend_value = '8192' # initial value of pitchbend that has no effect on sound (8192/128 = 64)
+    temp_pitchbend_value = '23' # initial value of pitchbend that has no effect on sound (8192 correspond to 23)
 
 
     ############### on ne garde que les tracks de guitare
     guitar_tracks = []
-    # dictionnary of possible names for lead tracks : 
-    possible_lead_names = ['guitar', 'Guitar', 'Lead', 'lead', 'Solo', 'solo', 'Angus Young']
-    count=0
-    for i in csv_string:
-        intermediaire = i.split(', ')
 
-        
     
+ 
+
+
+    for i in csv_string:
+
+        intermediaire = i.split(', ')
         if 'Title_t' in intermediaire[2]:
-            # check if the track is a guitar track
-            for name in possible_lead_names:
-                if name in intermediaire[3]:
-                    count+=1
-            if count>0:
-                # get the track number 
+
+            # check if the track is a guitar track : beware of the quotes : e.g.   , "Guitar\n"
+            if intermediaire[3].replace("\n","") in accounted_track_names:
                 guitar_tracks.append(int(intermediaire[0]))
-                                    
-            count=0
 
-  
+    print(guitar_tracks)
+                
+        
 
-    ###############
-    # TO DO : Quantization of pitchbend values ; 16384 values => 128 values
 
 
     if guitar_tracks == []:
@@ -58,7 +68,7 @@ def to_text(input_file, output_file, pitchbend = False):
             
             if pitchbend:
                 if 'Pitch_bend' in intermediaire[2]:
-                    temp_pitchbend_value = intermediaire[4][:-1] # quantization of pitchbend values
+                    temp_pitchbend_value = str(pitchbend_quantization_encoder(int(intermediaire[4][:-1]))) # quantization of pitchbend values
             if  'Note' in intermediaire[2]:
             ##############là on écrase toutes les tracks, intermediaire[0] et intermediaire[3] ne sont pas considérés
                 if not pitchbend:
@@ -67,8 +77,9 @@ def to_text(input_file, output_file, pitchbend = False):
                     lmidi.append([intermediaire[1],intermediaire[4],intermediaire[5][:-1],temp_pitchbend_value]) #  time pitch velocité pitchbend_value
 
 
-   # précaution : réordonnancement temporel
+   # précaution : réordonnancement temporel si plusieurs pistes passent 
     lmidi = sorted(lmidi, key=lambda x: int(x[0]))
+    
     # rectification vis à vis des notes off
     unfinished_notes = {}
     for i in range(len(lmidi)) :
@@ -76,6 +87,7 @@ def to_text(input_file, output_file, pitchbend = False):
 
             if pitchbend:
                 lfinal.append([lmidi[i][0],lmidi[i][1], lmidi[i][2], "","", lmidi[i][3]])
+                
             else:
                 lfinal.append([lmidi[i][0],lmidi[i][1], lmidi[i][2], "", ""])
             
@@ -106,8 +118,42 @@ def to_text(input_file, output_file, pitchbend = False):
     with open(output_file, "w") as file:
         file.write(s)
 
+    print("done")
 
 
+
+
+########## MIDI to text conversion :  pitchbend Quantization central IDEA : keeping a lot of values near 8192 (no pitchbend)
+
+def pitchbend_quantization_encoder(pitchbend_value): 
+    # si entre 0 et 7680 (8192-512) , on arrondit à 500 près
+    # si entre 7680 et 8704 , on arrondit à 64 près
+    # si entre 8704 (8192+512) et 16784 , on arrondit à 512 près
+    # 15 + 16 + 15 valeurs possibles
+    # puis bijection avec [O,46] (avec 0 et 46 données une seule fois pour 0 et 16384 respectivement)
+    if pitchbend_value < 7680:
+        return pitchbend_value//512
+
+    if pitchbend_value < 8704:
+        return 15 + (pitchbend_value-7680)//64
+    
+    if pitchbend_value < 16784:
+        return 31 + (pitchbend_value-8704)//512
+
+    return 46
+
+def pitchbend_quantization_decoder(pitchbend_value):
+
+    if pitchbend_value < 15:
+        return pitchbend_value*512
+    
+    if pitchbend_value < 31:
+        return 7680 + (pitchbend_value-15)*64
+    
+    if pitchbend_value < 47:
+        return 8704 + (pitchbend_value-31)*512
+
+    return 16384
 
 
 

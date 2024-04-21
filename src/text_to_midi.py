@@ -2,8 +2,7 @@ from copy import deepcopy
 import py_midicsv as pm
 import os
 import shutil
-
-import midi_textefinal # to test
+from midi_textfinal_DadaGP import pitchbend_quantization_decoder # to test
 
 
 ####################################################################
@@ -56,7 +55,7 @@ def create_midi_file(input_file_path,output_file_path, header, pitchbend = False
             #verifying it is not a Note Off
             if l[i][1]!=0:
                 # because of the quantization of pitchbend values we multiply by 128
-                csv_string.append("2, " + str(l[i][5]) + ", Pitch_bend_c, 0, "  + str(l[i][4]) + "\n") 
+                csv_string.append("2, " + str(l[i][5]) + ", Pitch_bend_c, 0, "  + str(pitchbend_quantization_decoder(int(l[i][4]))) + "\n")
                 
             csv_string.append("2, " + str(l[i][5]) + ", Note_on_c, 0, " + str(l[i][0]) + ", " + str(l[i][1]) + "\n")
 

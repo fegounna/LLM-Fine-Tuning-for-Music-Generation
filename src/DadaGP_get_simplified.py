@@ -86,9 +86,10 @@ print(count_errors)
 # 2nd step : keeping only the lead tracks of each piece and transcribing those into simplified MIDI : code in midi_textfinal_DadaGP.py ; 
 #######################################
 
+
+
+
 #getting rid of any previous generation
-
-
 if  os.path.exists('../generated files/DadaGP_metal_s_midis'):
     shutil.rmtree('../generated files/DadaGP_metal_s_midis')
 os.mkdir("../generated files/DadaGP_metal_s_midis")
@@ -104,8 +105,15 @@ for input_file_name in files:
         midi_textfinal_DadaGP.to_text(input_file_path,output_file_path, pitchbend = True)
     except Exception as e:
         continue
+
+
+
+
+
+
     
-    
+
+  
     
 ##################################### It gives 2695 unique MIDI files with bends  and then ... 1258 Simplified_MIDI files with bends #####################################
 # Les limites de notre code : quand il y a plusieurs guitares, on combine les tracks ( il faudrait changer beaucoup de choses pour les séparer)
@@ -113,15 +121,23 @@ for input_file_name in files:
 
 
 '''
-input_file_name = "AC-DC - Cover You In Oil.txt"
+
+input_file_name = "AC-DC - Beating Around The Bush.mid"
 id, extension = os.path.splitext(input_file_name)
-output_file_name = f"{id}.mid"
-input_file_path = os.path.join("../generated files/DadaGP_metal_s_midis", input_file_name)
-output_file_path = os.path.join("../generated files", output_file_name)
-
-
-
+output_file_name = f"{id}.txt"
+input_file_path = os.path.join("../generated files/DadaGP_metal_midis", input_file_name)
+output_file_path = os.path.join("../generated files/DadaGP_metal_s_midis", output_file_name)
+midi_textfinal_DadaGP.to_text(input_file_path,output_file_path, pitchbend = True)
 '''
+
+
+
+
+
+
+
+
+
 
 # testing  on a single file  : 
 
