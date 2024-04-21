@@ -28,7 +28,7 @@ Your Task is to complete the generation of :"""
 s="p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:t5 p81:v78:d389:t117"
 prompt = f"<s>[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[/INST]" # replace the ????
 
-pipe = pipeline(task="text-generation", model=model,do_sample=True,top_p=0.95,top_k=50,tokenizer=tokenizer,penalty_alpha=0.6,temperature=0.7,max_length=2048)
+pipe = pipeline(task="text-generation", model=model,do_sample=True,top_p=0.95,top_k=50,tokenizer=tokenizer,penalty_alpha=0.6,temperature=0.9,max_length=2048)
 
 #pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, temperature =0.9,penalty_alpha=0.6,top_p=0.5,max_length=1024)
                 #,repetition_penalty=1.5
