@@ -21,7 +21,7 @@ def main():
     load_in_4bit = True # Use 4bit quantization to reduce memory usage. Can be False.
     dataset_name = "fegounna/GMP_long_4K"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
-    num_train_epochs = 3
+    num_train_epochs = 1
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
