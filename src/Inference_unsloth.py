@@ -30,7 +30,7 @@ prompt = f"<s>[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[/INST]" # replac
 
 pipe = pipeline(task="text-generation", model=model,do_sample=True,top_p=0.95,penalty_alpha=0.6,tokenizer=tokenizer,temperature=0.7,max_length=1024)
 
-#pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, temperature =0.9,top_p=0.5,max_length=1024)
+#pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, eos_token_id=tokenizer.eos_token_id,temperature =0.9,top_p=0.5,max_length=1024)
                 #,repetition_penalty=1.5
                 # max_length=1028)
                 #
