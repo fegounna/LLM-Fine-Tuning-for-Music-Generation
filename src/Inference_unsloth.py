@@ -29,7 +29,7 @@ s="p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:
 s="p63:v80:d331:t4 p60:v72:d327:t73 p56:v76:d254:t1 p48:v70:d253:t30 p76:v62:d223:t1 p84:v84:d222:t6 p60:v67:d216:t122"
 prompt = f"<s>[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[/INST]" # replace the ????
 
-pipe = pipeline(task="text-generation", model=model,do_sample=True,tokenizer=tokenizer,top_k=10,temperature=0.8,top_p=0.95,penalty_alpha=0.1,max_length=2048)
+pipe = pipeline(task="text-generation", model=model,do_sample=True,tokenizer=tokenizer,top_k=5,temperature=0.8,top_p=0.95,penalty_alpha=0.1,max_length=2048)
 
 #pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, eos_token_id=tokenizer.eos_token_id,temperature =0.9,top_p=0.5,max_length=1024)
                 #,repetition_penalty=1.5
