@@ -3,7 +3,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftConfig, PeftModel
 from unsloth import FastLanguageModel
 
-peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_4k/'
+peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_4k_2/'
 device_map = {"": 0}
 
 model, tokenizer = FastLanguageModel.from_pretrained(
@@ -23,16 +23,12 @@ logging.set_verbosity(logging.CRITICAL)
 #system_message ="""You are a classical pianist composer. In this context, each music note in a musical sequence is described using four parameters: pitch (p) from 0 to 127 (highest pitch), volume (v) from 0 to 127 (loudest), duration of the note (d) in ticks, and the length of the pause (t) in ticks before the next note begins regardless of the previous note's duration. A tick is approximately 5.21 milliseconds. Each parameter is followed by its value and separated by colons (e.g. p52:v57:d195:t212). Your composition should demonstrate a clear progression and development, appropriate pauses, including thoughtful variations in melody, harmony, rhythm.
 #Your Task is to complete the generation of :"""
 
-system_message ="""You are a classical pianist composer. In this context, each music note in a musical sequence is described using four parameters: pitch (p) from 0 to 127 (highest pitch), volume (v) from 0 to 127 (loudest), duration of the note (d) in ticks, and the length of the pause (t) in ticks before the next note begins regardless of the previous note's duration. A tick is approximately 5.21 milliseconds. Each parameter is followed by its value and separated by colons (e.g. p52:v57:d195:t212). Your composition should demonstrate a clear progression and development, appropriate pauses, including thoughtful variations in melody, harmony, rhythm. Your Task is to complete the generation of :"""
-s="p69:v87:d565:t0 p50:v87:d585:t0 p53:v84:d584:t0 p57:v94:d565:t285 p67:v87:d144:t0"
-#prompt = f"[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
-prompt = f"[INST] <<SYS>> {system_message} <</SYS>> {s} [/INST]" 
+system_message ="""You are a classical pianist composer. In this context, each music note in a musical sequence is described using four parameters: pitch (p) from 0 to 127 (highest pitch), volume (v) from 0 to 127 (loudest), duration of the note (d) in ticks, and the length of the pause (t) in ticks before the next note begins regardless of the previous note's duration. A tick is approximately 5.21 milliseconds. Each parameter is followed by its value and separated by colons (e.g. p52:v57:d195:t212). Your composition should demonstrate a clear progression and development, appropriate pauses, including thoughtful variations in melody, harmony, rhythm.
+Your Task is to complete the generation of :"""
+s="p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:t5 p81:v78:d389:t117"
+prompt = f"<s>[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[INST]" # replace the ????
 
-#inputs = tokenizer([prompt], return_tensors = "pt").to("cuda")
-
-#outputs = model.generate(**inputs, max_new_tokens = 512, use_cache = True)
-#print(tokenizer.batch_decode(outputs))
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, temperature =0.9,top_p=0.8,do_sample=True,max_length=2048)
+pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer,max_length=1024)
 
 #pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, temperature =0.9,penalty_alpha=0.6,top_p=0.5,max_length=1024)
                 #,repetition_penalty=1.5
