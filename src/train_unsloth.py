@@ -21,11 +21,11 @@ def main():
     load_in_4bit = True # Use 4bit quantization to reduce memory usage. Can be False.
     dataset_name = "fegounna/GMP_8K"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
-    num_train_epochs = 1
+    num_train_epochs = 3
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
-    per_device_train_batch_size = 4
+    per_device_train_batch_size = 8
     gradient_accumulation_steps = 1 #last
     optim = "paged_adamw_32bit" #last
     save_steps = 0
