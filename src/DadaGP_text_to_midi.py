@@ -1,0 +1,198 @@
+from copy import deepcopy
+import py_midicsv as pm
+import os
+import shutil
+from midi_textfinal_DadaGP import pitchbend_quantization_decoder,to_text # to test
+
+
+
+####################################################################
+# Requires that the simplified_midi file finishes with a blank " " 
+####################################################################
+
+def create_midi_file(input_file_path,output_file_path, header, pitchbend = False):
+
+    with open(input_file_path,"r") as file:
+            simplified_midi = file.read()[:-1] 
+
+    l = simplified_midi.split(' ')
+    
+    
+    for i in range(len(l)):
+        l[i] = l[i].split(':')
+    
+    for i in range(len(l)):
+
+        if pitchbend:
+            for j in range(5):
+                l[i][j] = int(l[i][j][1:])
+        if not pitchbend:
+            for j in range(4):
+                l[i][j] = int(l[i][j][1:])
+
+    t_abs = 0
+    for i in range (len(l)):
+        l[i].append(t_abs)
+        t_abs+= l[i][3]
+    j=deepcopy(l)
+
+    
+    unfinished_notes = {} # dictionnary pitch:endtime
+    if pitchbend:
+        #compute the value of the note off for each note
+        for line in j:
+
+            #pour l'enchaînement des bends
+            if ((line[0] in unfinished_notes) and line[5]==unfinished_notes[line[0]]):
+                unfinished_notes[line[0]] = unfinished_notes[line[0]] + line[2]
+                
+            #pour le début des notes
+            if(line[0] not in unfinished_notes) :
+                unfinished_notes[line[0]] = line[5] + line[2]
+                #the note offs : 
+                #iterate on unfinished_notes to find the note off
+            temp_del_list=[]
+            for pitch in unfinished_notes:
+                if unfinished_notes[pitch] < line[5]:
+                    l.append([pitch,0,0,0,0,unfinished_notes[pitch]]) # our Note_off event
+                    temp_del_list.append(pitch)
+
+            for pitch in temp_del_list:
+                del unfinished_notes[pitch]
+
+        l = sorted(l, key=lambda x: x[5])
+        l.append([0,0,0,0,0,l[-1][5]])
+
+
+    for line in l:
+        print(line)     
+
+    if not pitchbend:
+        for a in j:
+            l.append([a[0],0,0,0,a[4]+a[2]])
+        l = sorted(l, key=lambda x: (x[4], 1 if l[1]==0 else 1/(l[1]+1)))
+        l.append([0,0,0,0,l[-1][4]])
+
+   
+
+    csv_string = deepcopy(header)
+
+    temp_bended_notes = {} # dictionnary pitch:time
+    for i in range(len(l)):
+        if pitchbend:
+            
+            #check if note_off :
+            if l[i][1]==0: # null velocity
+                if l[i][0] in temp_bended_notes:
+                    del temp_bended_notes[l[i][0]]
+                csv_string.append("2, " + str(l[i][5]) + ", Note_off_c, 0, " + str(l[i][0]) +", " + str(l[i][1])+ "\n")
+
+            else:
+                if l[i][0] in temp_bended_notes:
+                    csv_string.append("2, " + str(l[i][5]) + ", Pitch_bend_c, 0, "  + str(pitchbend_quantization_decoder(int(l[i][4]))) + "\n")
+
+                else:
+                    csv_string.append("2, " + str(l[i][5]) + ", Note_on_c, 0, " + str(l[i][0]) + ", " + str(l[i][1]) + "\n")
+                    temp_bended_notes[l[i][0]] = l[i][5] 
+
+            
+            
+
+        if not pitchbend:
+            csv_string.append("2, " + str(l[i][4]) + ", Note_on_c, 0, " + str(l[i][0]) + ", " + str(l[i][1]) + "\n")
+
+
+
+    if pitchbend:
+        csv_string.append("2, " + str(l[len(l)-1][5]) + ", End_track\n")
+    if not pitchbend:
+        csv_string.append("2, " + str(l[len(l)-1][4]) + ", End_track\n")
+
+    csv_string.append("0, 0, End_of_file")
+    # with open("./csv_string.txt", "w") as file :
+    #     file.write(str(csv_string))
+
+    midi_object = pm.csv_to_midi(csv_string)
+
+    with open(output_file_path, "wb") as output_file :
+        midi_writer = pm.FileWriter(output_file)
+        midi_writer.write(midi_object)
+
+    print("done_to_midi")
+
+
+
+#  Can we do otherwise than giving the same header to each file ? Training to predict the header ? 
+        
+############################################################
+# output_dir  will receive the untranscripted midis ; 
+# input_dir  is a directory of Simplified Midis
+############################################################ 
+        
+def dataset_text_to_midi(output_dir_path, input_dir_path,header):
+    files = os.listdir(input_dir_path)
+    for input_file_name in files:
+        
+        id, _ = os.path.splitext(input_file_name)
+        output_file_name =  output_file_name = f"{id}_converted.mid"
+        input_file_path = os.path.join(input_dir_path, input_file_name)
+        output_file_path = os.path.join(output_dir_path, output_file_name)
+        create_midi_file(input_file_path, output_file_path , str , header)
+        
+
+
+
+
+'''
+# for testing dataset_text_to_midi
+if  os.path.exists('../generated files/GMP_midis_converted'):
+    shutil.rmtree('../generated files/GMP_midis_converted')
+os.mkdir('../generated files/GMP_midis_converted')
+
+output_dir_path = "../generated files/GMP_midis_converted"
+input_dir_path = "../generated files/GMP_s_midis"
+# All files in GMP use the same header
+
+
+print("beginning untranscription...")
+dataset_text_to_midi(output_dir_path, input_dir_path, header)
+print("Done")
+
+'''
+
+
+
+
+# for testing create_midi_file
+
+# to check
+input_file_path = "../generated files/DadaGP_metal_midis/AC-DC - Can't Stop Rock N' Roll.mid"
+
+for i in pm.midi_to_csv(input_file_path):
+    print(i)
+
+# to simplified
+input_file_path = "../generated files/DadaGP_metal_midis/AC-DC - Can't Stop Rock N' Roll.mid"
+output_file_path = "../generated files/AC-DC - Can't Stop Rock N' Roll.txt"
+
+to_text(input_file_path, output_file_path, pitchbend = True)
+
+
+
+input_file_path = "../generated files/AC-DC - Can't Stop Rock N' Roll.txt"
+output_file_path = "../generated files/AC-DC - Can't Stop Rock N' Roll.mid"
+
+create_midi_file(input_file_path,
+                output_file_path,
+                header = ["0, 0, Header,1, 2, 480\n", "1, 0, Start_track\n", "1, 0, Tempo, 500000\n", "1, 0, Time_signature, 4, 2, 24, 8\n", "1, 1, End_track\n", "2, 0, Start_track\n"],
+                pitchbend = True)
+
+#midi_textefinal.texte("../generated files/00_BN1-129-Eb_solo_converted_PB.mid",pitchbend=True)
+print("done")
+#midi_textefinal.texte("../generated files/midi_data_from_jams/00_BN1-129-Eb_solo.mid", pitchbend=True)
+
+
+
+
+
+

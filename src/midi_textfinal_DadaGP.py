@@ -27,7 +27,7 @@ def to_text(input_file, output_file, pitchbend = False):
     csv_string = pm.midi_to_csv(r"{}".format(input_file))
     lmidi = []
 
-    temp_pitchbend_value = '23' # initial value of pitchbend that has no effect on sound (8192 correspond to 23)
+    temp_pitchbend_value = '23' # initial value of pitchbend that has no effect on sound (8192 correspond to 23 after encoding)
 
 
     ############### on ne garde que les tracks de guitare
@@ -69,16 +69,25 @@ def to_text(input_file, output_file, pitchbend = False):
             if pitchbend:
                 if 'Pitch_bend' in intermediaire[2]:
                     temp_pitchbend_value = str(pitchbend_quantization_encoder(int(intermediaire[4][:-1]))) # quantization of pitchbend values
+                    # can change multiple timds during the same note : we must add notes
+                    last_note = lmidi[-1]
+                    lmidi.append([intermediaire[1],last_note[1],last_note[2],temp_pitchbend_value]) # pitchbend_time ; last_note_pitch ; last_note_velocity ; pitchbend_value
+
             if  'Note' in intermediaire[2]:
             ##############là on écrase toutes les tracks, intermediaire[0] et intermediaire[3] ne sont pas considérés
                 if not pitchbend:
                     lmidi.append([intermediaire[1],intermediaire[4],intermediaire[5][:-1]]) #  time pitch velocité
                 else:
-                    lmidi.append([intermediaire[1],intermediaire[4],intermediaire[5][:-1],temp_pitchbend_value]) #  time pitch velocité pitchbend_value
+                    lmidi.append([intermediaire[1],intermediaire[4],intermediaire[5][:-1],temp_pitchbend_value]) #  time pitch velocity pitchbend_value
+            
+
 
 
    # précaution : réordonnancement temporel si plusieurs pistes passent 
     lmidi = sorted(lmidi, key=lambda x: int(x[0]))
+   
+    #for i in lmidi:
+        #print(i)
     
     # rectification vis à vis des notes off
     unfinished_notes = {}
@@ -86,12 +95,12 @@ def to_text(input_file, output_file, pitchbend = False):
         if lmidi[i][2] != "0":
 
             if pitchbend:
-                lfinal.append([lmidi[i][0],lmidi[i][1], lmidi[i][2], "","", lmidi[i][3]])
+                lfinal.append([lmidi[i][0],lmidi[i][1], lmidi[i][2], "","", lmidi[i][3]]) #abs_t, pitch, velocity, duration, t_till_next_note, pitchbend
                 
             else:
-                lfinal.append([lmidi[i][0],lmidi[i][1], lmidi[i][2], "", ""])
+                lfinal.append([lmidi[i][0],lmidi[i][1], lmidi[i][2], "", ""]) #abs_t, pitch, velocity, duration, t_till_next_note
             
-            lfinal[-2][4] = (str(int(lfinal[-1][0]) - int(lfinal[-2][0])))
+            lfinal[-2][4] = (str(int(lfinal[-1][0]) - int(lfinal[-2][0])))  #update t_till_next_note of the previous note
             if ((lmidi[i][1] in unfinished_notes)) :
                 unfinished_notes[lmidi[i][1]].append(len(lfinal) - 1)
             else :
@@ -102,11 +111,22 @@ def to_text(input_file, output_file, pitchbend = False):
                 idx = unfinished_notes[lmidi[i][1]][-1]
                 lfinal[idx][3] = str(int(lmidi[i][0]) - int(lfinal[idx][0]))
                 unfinished_notes[lmidi[i][1]].pop()
-
+    
+    
+    
     lfinal.pop(0)
     for i in range(len(lfinal)):
         lfinal[i].pop(0)   
     lfinal[-1][3] = "0"
+
+    #### last step : compute missing durations : in these cases (multiple Pitchbend values for the same note), it is equal to the t_till_next_note
+    for line in lfinal:
+        if line[2] == '':
+            line[2] = line[3]
+        
+
+
+
     s = ''
     for i in lfinal:
 
@@ -118,7 +138,7 @@ def to_text(input_file, output_file, pitchbend = False):
     with open(output_file, "w") as file:
         file.write(s)
 
-    print("done")
+    print("done_to_text")
 
 
 

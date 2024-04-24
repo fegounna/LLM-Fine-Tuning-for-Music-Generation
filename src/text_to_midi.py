@@ -2,7 +2,8 @@ from copy import deepcopy
 import py_midicsv as pm
 import os
 import shutil
-from midi_textfinal_DadaGP import pitchbend_quantization_decoder # to test
+from midi_textfinal_DadaGP import pitchbend_quantization_decoder,to_text # to test
+
 
 
 ####################################################################
@@ -49,6 +50,7 @@ def create_midi_file(input_file_path,output_file_path, header, pitchbend = False
 
     csv_string = deepcopy(header)
 
+
     for i in range(len(l)):
 
         if pitchbend:
@@ -78,7 +80,7 @@ def create_midi_file(input_file_path,output_file_path, header, pitchbend = False
         midi_writer = pm.FileWriter(output_file)
         midi_writer.write(midi_object)
 
-    
+    print("done_to_midi")
 
 
 
@@ -122,23 +124,37 @@ print("Done")
 
 
 
-'''
+
 # for testing create_midi_file
 
-midi_textefinal.main("../generated files/midi_data_from_jams/00_BN2-166-Ab_solo.mid","../generated files/00_BN2-166-Ab_solo_PB.txt", pitchbend= True)
+# to check
+input_file_path = "../generated files/DadaGP_metal_midis/AC-DC - Can't Stop Rock N' Roll.mid"
 
-input_file_path = "../generated files/00_BN2-166-Ab_solo_PB.txt"
-with open(input_file_path,"r") as file:
-            s = file.read()[:-1] 
-create_midi_file("../generated files/00_BN2-166-Ab_solo_PB.mid",
-                s,
-                header = ["0, 0, Header,1, 2, 384\n", "1, 0, Start_track\n", "1, 0, Tempo, 500000\n", "1, 0, Time_signature, 4, 2, 24, 8\n", "1, 1, End_track\n", "2, 0, Start_track\n"],
+for i in pm.midi_to_csv(input_file_path):
+    print(i)
+
+# to simplified
+input_file_path = "../generated files/DadaGP_metal_midis/AC-DC - Can't Stop Rock N' Roll.mid"
+output_file_path = "../generated files/AC-DC - Can't Stop Rock N' Roll.txt"
+
+to_text(input_file_path, output_file_path, pitchbend = True)
+
+
+
+input_file_path = "../generated files/AC-DC - Can't Stop Rock N' Roll.txt"
+output_file_path = "../generated files/AC-DC - Can't Stop Rock N' Roll.mid"
+
+create_midi_file(input_file_path,
+                output_file_path,
+                header = ["0, 0, Header,1, 2, 480\n", "1, 0, Start_track\n", "1, 0, Tempo, 500000\n", "1, 0, Time_signature, 4, 2, 24, 8\n", "1, 1, End_track\n", "2, 0, Start_track\n"],
                 pitchbend = True)
 
 #midi_textefinal.texte("../generated files/00_BN1-129-Eb_solo_converted_PB.mid",pitchbend=True)
-print('\n\n')
+print("done")
 #midi_textefinal.texte("../generated files/midi_data_from_jams/00_BN1-129-Eb_solo.mid", pitchbend=True)
 
 
-'''
+
+
+
 
