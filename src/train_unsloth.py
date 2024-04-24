@@ -15,17 +15,17 @@ import wandb
 from unsloth import FastLanguageModel
 
 def main():
-    new_model = "llama-2-music_4k_full"
-    max_seq_length = 4096 # Choose any! We auto support RoPE Scaling internally!
+    new_model = "llama-2-music_8k"
+    max_seq_length = 8192 # Choose any! We auto support RoPE Scaling internally!
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
     load_in_4bit = True # Use 4bit quantization to reduce memory usage. Can be False.
-    dataset_name = "fegounna/GMP_4K"
+    dataset_name = "fegounna/GMP_8K"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
     num_train_epochs = 1
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
-    per_device_train_batch_size = 16
+    per_device_train_batch_size = 4
     gradient_accumulation_steps = 1 #last
     optim = "paged_adamw_32bit" #last
     save_steps = 0
