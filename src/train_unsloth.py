@@ -60,8 +60,6 @@ def main():
     )
 
     dataset = load_dataset(dataset_name, split="train")
-    dataset = dataset.shuffle(seed=42)
-    dataset = dataset.select(range(100000))
     
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
