@@ -3,12 +3,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftConfig, PeftModel
 from unsloth import FastLanguageModel
 
-peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_4k_2_lr/'
+peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_8k/'
 device_map = {"": 0}
 
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name = peft_model_id, # YOUR MODEL YOU USED FOR TRAINING
-    max_seq_length = 4096,
+    max_seq_length = 8192,
     dtype = None,
     load_in_4bit = True,
 )
