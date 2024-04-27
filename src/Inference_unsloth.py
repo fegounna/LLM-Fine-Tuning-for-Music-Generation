@@ -3,12 +3,12 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftConfig, PeftModel
 from unsloth import FastLanguageModel
 
-peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_8k/'
+peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-GMP-32k/'
 device_map = {"": 0}
 
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name = peft_model_id, # YOUR MODEL YOU USED FOR TRAINING
-    max_seq_length = 8192,
+    max_seq_length = 32768,
     dtype = None,
     load_in_4bit = True,
 )
@@ -28,7 +28,7 @@ Your Task is to complete the generation of :"""
 s="p45:v73:d389:t1 p84:v84:d388:t7 p76:v62:d227:t0 p48:v63:d5:t110 p52:v69:d394:t5 p81:v78:d389:t117"
 prompt = f"<s>[INST] <<SYS>>\n{system_message}\n<</SYS>>\n\n{s}[/INST]" # replace the ????
 
-pipe = pipeline(task="text-generation", model=model,tokenizer=tokenizer,top_p=0.95,temperature=1,do_sample=True,max_length=4096)
+pipe = pipeline(task="text-generation", model=model,tokenizer=tokenizer,top_p=0.95,temperature=1,do_sample=True,max_length=2096)
 #do_sample=True
 #pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, eos_token_id=tokenizer.eos_token_id,temperature =0.9,top_p=0.5,max_length=8000)
                 #,repetition_penalty=1.5
