@@ -15,11 +15,11 @@ import wandb
 from unsloth import FastLanguageModel
 
 def main():
-    new_model = "llama-2-GMP-16k"
+    new_model = "llama-2-GMP-32k"
     max_seq_length = 32768 # Choose any! We auto support RoPE Scaling internally!
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
     load_in_4bit = True # Use 4bit quantization to reduce memory usage. Can be False.
-    dataset_name = "fegounna/GMP_16K"
+    dataset_name = "fegounna/GMP_32K"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
     num_train_epochs = 1
     max_steps = -1
