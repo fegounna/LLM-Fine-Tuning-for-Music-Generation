@@ -27,7 +27,7 @@ def main():
     bf16 = torch.cuda.is_bf16_supported()
     per_device_train_batch_size = 8
     gradient_accumulation_steps = 1 #last
-    optim = "paged_adamw_32bit " #last
+    optim = "paged_adamw_32bit" #last
     save_steps = 0
     learning_rate = 2e-4
     max_grad_norm = 0.3
