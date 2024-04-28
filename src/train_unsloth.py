@@ -59,7 +59,7 @@ def main():
         loftq_config = None, # And LoftQ
     )
 
-    dataset = load_dataset(dataset_name, split="train")
+    dataset = load_dataset(dataset_name, split="train[:55000]")
     
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
