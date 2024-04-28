@@ -1,6 +1,6 @@
 # Llama2 Music Generation
 
-<img src="https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/c8c4f29c-7f24-4840-ac15-da371894b925" width="200">
+<img src="https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/c8c4f29c-7f24-4840-ac15-da371894b925" width="400">
 
 
 This repository focuses on fine-tuning Llama2 for music generation tasks. The process involves converting MIDI files to a text-based representation using `midi_textefinal.py` script. The text representation encodes musical notes as quadruplets, where each variable is separated by a colon (`:`). Within each quadruplet, the four variables represent:
