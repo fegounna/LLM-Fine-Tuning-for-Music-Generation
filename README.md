@@ -23,13 +23,7 @@ To convert a MIDI file to text format, use the `midi_textefinal.py`
 To convert text to a MIDI file, use the `text_to_midi.py` 
 ### Generating Music
 
-## Example
-Given the Prompt :
-
-
-https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/1b53d5de-0b93-4ce8-89cc-200fb1d13171
-
-We have the completion :
+## Examples
 
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/447f61fb-10bc-43f9-ba5d-b3793919f352
 
