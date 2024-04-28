@@ -31,7 +31,8 @@ https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/13099953
 
 We have the completion :
 
-https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/27ebf1d4-08ee-4bdf-b3cb-067b936a8445
+https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/447f61fb-10bc-43f9-ba5d-b3793919f352
+
 
 
 
