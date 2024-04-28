@@ -15,13 +15,13 @@ import wandb
 from unsloth import FastLanguageModel
 
 def main():
-    new_model = "llama-2-GMP-8k-constant"
+    new_model = "llama-2-GMP-8k-long"
     max_seq_length = 8192 # Choose any! We auto support RoPE Scaling internally!
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
     load_in_4bit = True # Use 4bit quantization to reduce memory usage. Can be False.
-    dataset_name = "fegounna/GMP_8K"
+    dataset_name = "fegounna/GMP_8K_long"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
-    num_train_epochs = 3
+    num_train_epochs = 1
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
@@ -33,7 +33,7 @@ def main():
     max_grad_norm = 0.3
     group_by_length = True
     warmup_ratio = 0.03
-    lr_scheduler_type = "constant"
+    lr_scheduler_type = "cosine"
     weight_decay = 0.001
     logging_steps = 25
     packing = False
