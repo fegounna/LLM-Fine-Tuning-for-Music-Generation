@@ -29,6 +29,10 @@ https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/13099953
 
 
 
+https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/fe9e7d90-40a1-4163-9c1f-7c666625b7b5
+
+
+
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/82f6ed19-9bd9-4778-9ed2-943f3b202fcf
 
 
