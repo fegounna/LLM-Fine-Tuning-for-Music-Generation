@@ -3,7 +3,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import PeftConfig, PeftModel
 from unsloth import FastLanguageModel
 
-peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/llama-2-music_8k/'
+peft_model_id = '/users/eleves-a/2022/yessin.moakher/output/checkpoint-750/'
 device_map = {"": 0}
 
 model, tokenizer = FastLanguageModel.from_pretrained(
