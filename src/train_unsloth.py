@@ -40,7 +40,7 @@ def main():
     packing = False
 
     model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name = "unsloth/llama-2-7b-bnb-4bit",
+        model_name = "unsloth/llama-3-8b-bnb-4bit",
         max_seq_length = max_seq_length,
         dtype = dtype,
         load_in_4bit = load_in_4bit,
