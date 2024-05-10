@@ -29,14 +29,14 @@ def main():
     gradient_accumulation_steps = 4 #last
     optim = "paged_adamw_32bit" #last
     save_steps = 500
-    learning_rate = 5e-4
+    learning_rate = 2e-4
     max_grad_norm = 0.3
     group_by_length = True
     #warmup_ratio = 0.1
     warmup_ratio = 0.01
     lr_scheduler_type = "cosine"
     weight_decay = 0.001
-    logging_steps = 20
+    logging_steps = 25
     packing = False
 
     model, tokenizer = FastLanguageModel.from_pretrained(
