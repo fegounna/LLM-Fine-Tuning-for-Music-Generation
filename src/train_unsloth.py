@@ -36,7 +36,7 @@ def main():
     warmup_ratio = 0.01
     lr_scheduler_type = "cosine"
     weight_decay = 0.001
-    logging_steps = 10
+    logging_steps = 5
     packing = False
 
     model, tokenizer = FastLanguageModel.from_pretrained(
