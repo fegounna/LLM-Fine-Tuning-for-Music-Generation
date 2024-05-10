@@ -32,8 +32,8 @@ def main():
     learning_rate = 2e-4
     max_grad_norm = 0.3
     group_by_length = True
-    warmup_ratio = 0.1
-    #warmup_ratio = 0.03
+    #warmup_ratio = 0.1
+    warmup_ratio = 0.03
     lr_scheduler_type = "cosine"
     weight_decay = 0.001
     logging_steps = 20
