@@ -28,7 +28,7 @@ def main():
     per_device_train_batch_size = 8
     gradient_accumulation_steps = 16 #last
     optim = "paged_adamw_32bit" #last
-    save_steps = 500
+    save_steps = 100
     learning_rate = 1e-4
     max_grad_norm = 0.3
     group_by_length = True
@@ -36,7 +36,7 @@ def main():
     warmup_ratio = 0.01
     lr_scheduler_type = "cosine"
     weight_decay = 0.001
-    logging_steps = 20
+    logging_steps = 10
     packing = False
 
     model, tokenizer = FastLanguageModel.from_pretrained(
