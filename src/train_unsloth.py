@@ -15,13 +15,13 @@ import wandb
 from unsloth import FastLanguageModel
 
 def main():
-    new_model = "llama-2-GMP-8k-long"
-    max_seq_length = 8192 # Choose any! We auto support RoPE Scaling internally!
+    new_model = "llama-2-GMP-8k_mlp_e"
+    max_seq_length = 8192 
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
-    load_in_4bit = True # Use 4bit quantization to reduce memory usage. Can be False.
-    dataset_name = "fegounna/GMP_8K_long"
+    load_in_4bit = True 
+    dataset_name = "fegounna/GMP_8K"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
-    num_train_epochs = 2
+    num_train_epochs = 10
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
@@ -36,7 +36,7 @@ def main():
     #warmup_ratio = 0.03
     lr_scheduler_type = "cosine"
     weight_decay = 0.001
-    logging_steps = 10
+    logging_steps = 20
     packing = False
 
     model, tokenizer = FastLanguageModel.from_pretrained(
@@ -56,11 +56,11 @@ def main():
         bias = "none",    # Supports any, but = "none" is optimized
         use_gradient_checkpointing = "unsloth",
         random_state = 42,
-        use_rslora = False,  # We support rank stabilized LoRA
-        loftq_config = None, # And LoftQ
+        use_rslora = False,  
+        loftq_config = None, 
     )
 
-    dataset = load_dataset(dataset_name, split="train[:48000]")
+    dataset = load_dataset(dataset_name, split="train")
     
     tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
