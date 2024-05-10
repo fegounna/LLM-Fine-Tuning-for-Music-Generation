@@ -29,7 +29,7 @@ def main():
     gradient_accumulation_steps = 32 #last
     optim = "paged_adamw_32bit" #last
     save_steps = 500
-    learning_rate = 2e-4
+    learning_rate = 1e-4
     max_grad_norm = 0.3
     group_by_length = True
     #warmup_ratio = 0.1
