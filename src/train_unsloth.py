@@ -34,7 +34,7 @@ def main():
     group_by_length = True
     #warmup_ratio = 0.1
     #warmup_ratio = 0.01
-    num_warmup_steps = 3
+    warmup_steps = 3
     lr_scheduler_type = "cosine"
     weight_decay = 0.001
     logging_steps = 5
@@ -81,7 +81,7 @@ def main():
         max_grad_norm=max_grad_norm,
         max_steps=max_steps,
         #warmup_ratio=warmup_ratio,
-        num_warmup_steps=num_warmup_steps,
+        warmup_steps=warmup_steps,
         group_by_length=group_by_length,
         lr_scheduler_type=lr_scheduler_type,
         report_to="wandb",
