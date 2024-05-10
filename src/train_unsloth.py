@@ -34,7 +34,8 @@ def main():
     group_by_length = True
     #warmup_ratio = 0.1
     #warmup_ratio = 0.01
-    warmup_steps = 3
+    warmup_steps = 3 #Add
+    #set the final learning rate to be 1/30th 
     lr_scheduler_type = "cosine"
     weight_decay = 0.001 #make it 0
     logging_steps = 5
