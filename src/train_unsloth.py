@@ -19,7 +19,7 @@ def main():
     max_seq_length = 8192 
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
     load_in_4bit = True 
-    dataset_name = "fegounna/GMP_8K"
+    dataset_name = "fegounna/GMP_8K_long"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
     num_train_epochs = 10
     max_steps = -1
