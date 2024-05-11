@@ -16,7 +16,7 @@ from unsloth import FastLanguageModel
 
 def main():
     new_model = "llama-2-GMP-8k_mlp_e"
-    max_seq_length = 16384 #try multiplying the context
+    max_seq_length = 32768 
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
     load_in_4bit = True 
     dataset_name = "fegounna/GMP_8K_long"
