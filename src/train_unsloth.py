@@ -16,25 +16,25 @@ from unsloth import FastLanguageModel
 
 def main():
     new_model = "llama-2-GMP-8k_mlp_e"
-    max_seq_length = 8192 #try multiplying the context
+    max_seq_length = 16384 #try multiplying the context
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
     load_in_4bit = True 
     dataset_name = "fegounna/GMP_8K_long"
     output_dir = "/users/eleves-a/2022/yessin.moakher/output/"
-    num_train_epochs = 10
+    num_train_epochs = 3
     max_steps = -1
     fp16 = not torch.cuda.is_bf16_supported()
     bf16 = torch.cuda.is_bf16_supported()
-    per_device_train_batch_size = 8
-    gradient_accumulation_steps = 16 #don't need
+    per_device_train_batch_size = 4
+    gradient_accumulation_steps = 8 #don't need
     optim = "paged_adamw_32bit" #last
     save_steps = 100
     learning_rate = 2e-4
     max_grad_norm = 0.3
     group_by_length = True
-    #warmup_ratio = 0.1
+    warmup_ratio = 0.1
     #warmup_ratio = 0.01
-    warmup_steps = 15 
+    #warmup_steps = 15 
     #set the final learning rate to be 1/30th 
     lr_scheduler_type = "cosine"
     weight_decay = 0.001 #make it 0
