@@ -16,7 +16,7 @@ from unsloth import FastLanguageModel
 
 def main():
     new_model = "llama-2-GMP-8k_mlp_e"
-    max_seq_length = 32768 
+    max_seq_length = 8192 
     dtype = None # None for auto detection. Float16 for Tesla T4, V100, Bfloat16 for Ampere+
     load_in_4bit = True 
     dataset_name = "fegounna/GMP_8K_long"
@@ -32,12 +32,13 @@ def main():
     learning_rate = 2e-4
     max_grad_norm = 0.3
     group_by_length = True
-    warmup_ratio = 0.1
+    #warmup_ratio = 0.1
     #warmup_ratio = 0.01
-    #warmup_steps = 15 
+    warmup_steps = 50 
     #set the final learning rate to be 1/30th 
     lr_scheduler_type = "cosine"
-    weight_decay = 0.001 #make it 0
+    #weight_decay = 0.001 #make it 0
+    weight_decay = 0
     logging_steps = 5
     packing = False
 
