@@ -29,14 +29,14 @@ def main():
     gradient_accumulation_steps = 1 
     optim = "paged_adamw_32bit" #last
     save_steps = 100
-    learning_rate = 2e-5
+    learning_rate = 2e-4
     max_grad_norm = 0.3
     group_by_length = True
     #warmup_ratio = 0.1
     #warmup_ratio = 0.01
     warmup_steps = 50 
     #set the final learning rate to be 1/30th 
-    lr_scheduler_type = "cosine"
+    lr_scheduler_type = "linear"
     #weight_decay = 0.001 #make it 0
     weight_decay = 0
     logging_steps = 5
