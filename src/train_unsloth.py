@@ -40,7 +40,7 @@ def main():
     lr_scheduler_type = "cosine_with_restarts"
     weight_decay = 0.001 #make it 0
     #weight_decay = 0
-    logging_steps = 20
+    logging_steps = 5
     packing = False
 
     model, tokenizer = FastLanguageModel.from_pretrained(
