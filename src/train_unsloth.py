@@ -102,7 +102,7 @@ def main():
         args=training_arguments,
         packing=packing,
     )
-    trainer.train()
+    trainer.train(resume_from_checkpoint = True)
     trainer.model.save_pretrained(output_dir+new_model)
     # Empty VRAM
     del model
