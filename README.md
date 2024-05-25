@@ -25,7 +25,7 @@ To convert text to a MIDI file, use the `text_to_midi.py`
 
 ## Examples
 
-<iframe src="https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/5bad2db3-d302-4b5b-8543-daa4c5905ddf",width="400">
+https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/5bad2db3-d302-4b5b-8543-daa4c5905ddf
 
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/1457b861-6d13-44b1-9fc4-b9502c6fc1ee
 
