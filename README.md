@@ -25,45 +25,12 @@ To convert text to a MIDI file, use the `text_to_midi.py`
 
 ## Examples
 
-https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/447f61fb-10bc-43f9-ba5d-b3793919f352
-
-
-
-https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/fe9e7d90-40a1-4163-9c1f-7c666625b7b5
-
-
-
-https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/82f6ed19-9bd9-4778-9ed2-943f3b202fcf
-
-
-
-
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/5bad2db3-d302-4b5b-8543-daa4c5905ddf
-
-
-
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/1457b861-6d13-44b1-9fc4-b9502c6fc1ee
-
-
-
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/0ddec94f-4aab-4c80-8bdf-b1ea817d3ec3
-
-
-
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/d8f6f578-e00b-4a82-adf0-ebbfb41aea6c
-
-
-
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/9a71279b-a2b7-467e-8d89-2191c12313d1
-
-
-
 https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/0c83de6a-5287-457a-96be-a598828e4141
-
-
-<iframe width="320" height="180" src="https://github.com/fegounna/LLM-Fine-Tuning-for-Music-Generation/assets/130999532/0c83de6a-5287-457a-96be-a598828e4141" frameborder="0" allowfullscreen></iframe>
-
-
 
 ## Acknowledgments
 
